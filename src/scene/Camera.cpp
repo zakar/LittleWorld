@@ -79,17 +79,17 @@ void Camera::draw(std::list<Mesh*> *meshes, std::list<Sprite*> *sprites, std::li
 
         #ifdef GL_EXT_stencil_two_side && GL_EXT_stencil_wrap
 
-        glEnable(GL_STENCIL_TEST_TWO_SIDE_EXT);
+        // glEnable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 
-        glActiveStencilFaceEXT(GL_BACK);
-        glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP_EXT);
+        // glActiveStencilFaceEXT(GL_BACK);
+        // glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP_EXT);
 
-        glActiveStencilFaceEXT(GL_FRONT);
-        glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP_EXT);
+        // glActiveStencilFaceEXT(GL_FRONT);
+        // glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP_EXT);
 
-        drawAllShadows(meshes, *l);
+        // drawAllShadows(meshes, *l);
 
-        glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
+        // glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 
         #else
 
