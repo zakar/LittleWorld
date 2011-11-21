@@ -16,6 +16,7 @@
 #include "Camera.h"
 
 #include <list>
+#include <vector>
 #include <iostream>
 
 class World
@@ -28,7 +29,8 @@ class World
         void update(float time);
         void updateMousePosition(float mouseScreenX, float mouseScreenY);
         void dispatch(unsigned const int type);
-        void addPlayer(bool focus);
+
+        void addPlayer(float x, float z, bool focus);
         void addEnemy(float x, float z);
         void addWallDecor(float x, float z, float h);
         void addFloorDecor(float x, float z);
@@ -45,12 +47,11 @@ class World
         float mouseX;
         float mouseY;
 
-        // TODO use static Arrays
-        std::list<Dynamic*> dynamicList;
-        std::list<Static*>  staticList;
-        std::list<Mesh*>    meshList;
-        std::list<Sprite*>  spriteList;
-        std::list<Light*>   lightList;
+	std::vector<Dynamic*> dynamicList;
+        std::vector<Static*>  staticList;
+        std::vector<Mesh*>    meshList;
+        std::vector<Sprite*>  spriteList;
+        std::vector<Light*>   lightList;
 
         Camera camera;
         Pathfinder pathfinder;

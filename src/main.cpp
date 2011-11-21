@@ -73,10 +73,6 @@ int main()
     // Setup rendering
     glShadeModel(GL_SMOOTH);
     glCullFace(GL_FRONT);
-    //glEnable(GL_POINT_SMOOTH);
-    //glEnable(GL_LINE_SMOOTH);
-    //glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-    //glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
     // Vertex buffer objects
@@ -97,6 +93,7 @@ int main()
     glClearDepth(GL_ONE);
     glClearStencil(GL_ZERO);
     glClearColor(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
+
 
     // Setup window
     setupWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -143,10 +140,12 @@ int main()
                     game.onEvent(&event);
                     break;
 
+                case Event::KeyPressed:
+		  game.onEvent(&event);
+
                 case Event::LostFocus:
                 case Event::GainedFocus:
                 case Event::TextEntered:
-                case Event::KeyPressed:
                 case Event::KeyReleased:
                 case Event::MouseWheelMoved:
                 case Event::MouseButtonReleased:
@@ -161,15 +160,6 @@ int main()
             }
         }
 
-        // Reset matix
-        glLoadIdentity();
-
-        // Isometric angle
-        glRotatef(30.f, 1.f, 0.f, 0.f);
-        glRotatef(-45.f, 0.f, 1.f, 0.f);
-
-        // Scale
-        glScaled(sqrt(1/2.0), sqrt(1/3.0), sqrt(1/2.0));
 
         //Update
         game.update(gameClock.GetElapsedTime());

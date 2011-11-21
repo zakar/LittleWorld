@@ -1,0 +1,46 @@
+代码中涉及到的类
+
+(大多数的构造函数坐标都是硬编码?)
+Entity(position.size,visible,lightned.   Vector3.   get*)
+   |
+   |----Dynamic(path,destination,direction,speed.   World,Vector3,Vector3Util.   move,setPath,setDestination)
+   |      |
+   |	  |-----Player(. World. onNotify调用World的组件getPath获取路径,update移动)
+   |      |
+   |      |-----Enemy(. World. update随机目标坐标获取路路径然后移动)
+   |
+   |----Static(walkable. . getGrid*)
+   	  |
+   	  |-----Decor(walkable. . isWalkable)
+   	  |
+          |-----Emitter( . . )
+
+Game(world,window*.  World.  init加入各种Entity,onEvent,setMousePosition.  
+
+World(*List.  Camera,Pathfinder.  draw,update,dispatch,add*)
+
+Camera
+
+Pathfinder
+
+Object(entity.  Entity.  绑定到entity的绘图对象)
+  |
+  |-----Light(setup设置光源, draw绘制一堆对称相交triangles,outline绘制一堆对称相交的线段)
+  |
+  |-----Mesh(vertices[24],triangles[12],立方体的信息.  draw,outline绘制立方体,drawShadow根据面邻近信息绘制阴影 )
+  |
+  |-----Sprite(vertices[4]四个顶点的坐标、法向量.  draw,outline两种不同的绘制矩形方案(貌似比较sb-_-))
+
+VBO(使用buffer优化的绘制顶点对象)
+
+Frustum(投影变换相关)
+
+Matrix4x4f(矩阵操作)
+
+Vector3(x,y,z.  operator各种顶点运算)
+
+Vector3Util(顶点操作)
+
+Notifications(定义事件)
+
+

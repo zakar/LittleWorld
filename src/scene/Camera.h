@@ -15,6 +15,7 @@
 #include "Entity.h"
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include <list>
 #include <iostream>
 
@@ -25,7 +26,7 @@ class Camera
         Camera();
 
         void update(float time);
-        void draw(std::list<Mesh*> *meshes, std::list<Sprite*> *sprites, std::list<Light*> *lights);
+        void draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights);
         void setFocus(Entity *o);
 
         float getX();
@@ -37,15 +38,15 @@ class Camera
 
         void drawObject(Object *o);
         void outlineObject(Object *o);
-        void drawAllMeshes(std::list<Mesh*> *objects);
-        void outlineAllMeshes(std::list<Mesh*> *objects);
-        void drawAllSprites(std::list<Sprite*> *objects);
-        void outlineAllSprites(std::list<Sprite*> *objects);
-        void drawAllLights(std::list<Light*> *objects);
-        void outlineAllLights(std::list<Light*> *objects);
-        void drawAllShadows(std::list<Mesh*> *objects, Light *l);
-        void updateMeshesVisibility(std::list<Mesh*> *objects);
-        void updateSpritesVisibility(std::list<Sprite*> *objects);
+        void drawAllMeshes(std::vector<Mesh*> *objects);
+        void outlineAllMeshes(std::vector<Mesh*> *objects);
+        void drawAllSprites(std::vector<Sprite*> *objects);
+        void outlineAllSprites(std::vector<Sprite*> *objects);
+        void drawAllLights(std::vector<Light*> *objects);
+        void outlineAllLights(std::vector<Light*> *objects);
+        void drawAllShadows(std::vector<Mesh*> *objects, Light *l);
+        void updateMeshesVisibility(std::vector<Mesh*> *objects);
+        void updateSpritesVisibility(std::vector<Sprite*> *objects);
         void updateViewFrustum();
         void setupLight(Light *l);
 

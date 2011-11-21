@@ -16,7 +16,6 @@
 #define A_POS 3
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-#define TO_GRID(i) ((int)((i + GRID_UNIT / 2.f) / GRID_UNIT))
 
 struct Plane
 {

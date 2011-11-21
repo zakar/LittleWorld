@@ -6,9 +6,9 @@ Enemy::Enemy(World *w, float x, float z, float s) : Dynamic(w, s)
 {
     speed = 120.f;
 
-    position.x = 512.f;
+    position.x = x;
     position.y = 0.f;
-    position.z = 512.f;
+    position.z = z;
 }
 
 void Enemy::update(float time)

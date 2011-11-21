@@ -1,0 +1,422 @@
+
+main.cpp,98
+float frameCount 15,238
+void setupWindow(17,263
+void onWindowResized(57,1323
+int main(62,1408
+
+ai/Pathfinder.cpp,401
+Pathfinder::Pathfinder(5,47
+void Pathfinder::registerEntity(25,448
+vector<Vector3*> Pathfinder::getPath(44,946
+bool Pathfinder::isPathWalkable(62,1371
+list<Tile*> Pathfinder::getTraversingTiles(100,2409
+vector<Vector3*> Pathfinder::aStar(154,3875
+bool Pathfinder::isEmpty(293,8429
+int Pathfinder::getGScore(327,9184
+int Pathfinder::getHScore(332,9302
+void Pathfinder::computeScores(337,9412
+
+ai/Pathfinder.h,169
+#define PATHFINDER2,19
+class Pathfinder15,262
+        Tile grid[Pathfinder::grid28,475
+inline int Pathfinder::toGrid(45,1051
+inline int Pathfinder::toGrid(50,1133
+
+game/Game.cpp,158
+Game::Game(6,61
+void Game::init(13,166
+void Game::draw(50,1649
+void Game::update(55,1690
+void Game::onEvent(60,1749
+void Game::setMousePosition(89,2627
+
+game/Game.h,258
+#define DEF_GAME2,17
+class Game11,194
+        World world;Game::world26,431
+        float windowScale;Game::windowScale28,453
+        float windowPaddingLeft;Game::windowPaddingLeft29,480
+        float windowPaddingTop;Game::windowPaddingTop30,513
+
+graphics/object/Light.cpp,192
+Light::Light(5,42
+void Light::draw(16,207
+void Light::outline(55,1173
+void Light::setup(74,1574
+float Light::getIntensityFromDistance(89,2093
+float Light::getIntensityAtPosition(94,2213
+
+graphics/object/Light.h,265
+#define DEF_LIGHT2,18
+class Light 10,159
+        float red;Light::red27,455
+        float green;Light::green28,474
+        float blue;Light::blue29,495
+        float ca;Light::ca30,515
+        float la;Light::la31,533
+        float qa;Light::qa32,551
+
+graphics/object/Mesh.cpp,191
+Mesh::Mesh(5,41
+void Mesh::updatePlaneEquations(302,10785
+void Mesh::updateConnectivity(325,12235
+void Mesh::draw(365,13454
+void Mesh::outline(386,14049
+void Mesh::drawShadow(403,14586
+
+graphics/object/Mesh.h,435
+#define DEF_MESH2,17
+class Mesh 13,219
+        unsigned int totalVertex;Mesh::totalVertex31,609
+        unsigned int totalTriangles;Mesh::totalTriangles32,643
+        unsigned int totalIndexes;Mesh::totalIndexes33,680
+        Vertex vertices[Mesh::vertices35,716
+        Triangle triangles[Mesh::triangles36,745
+        GLubyte indexes[Mesh::indexes37,777
+        VBO *vertexBufferObject;Mesh::vertexBufferObject39,807
+
+graphics/object/Sprite.cpp,78
+Sprite::Sprite(5,43
+void Sprite::draw(70,2026
+void Sprite::outline(86,2606
+
+graphics/object/Sprite.h,333
+#define DEF_SPRITE2,19
+class Sprite 14,284
+        unsigned int totalVertex;Sprite::totalVertex26,508
+        unsigned int totalIndexes;Sprite::totalIndexes27,542
+        Vertex vertices[Sprite::vertices29,578
+        GLubyte indexes[Sprite::indexes30,606
+        VBO *vertexBufferObject;Sprite::vertexBufferObject32,635
+
+graphics/Object.h,134
+#define DEF_OBJECT2,19
+class Object9,119
+        Entity *entity;Object::entity32,442
+        bool visible;Object::visible34,467
+
+graphics/VBO.h,245
+#define DEF_VBO2,16
+class VBO9,120
+        unsigned int totalVertex;VBO::totalVertex21,295
+        unsigned int totalIndexes;VBO::totalIndexes22,329
+        GLuint vboID;VBO::vboID24,365
+        GLuint indexVBOID;VBO::indexVBOID25,387
+
+graphics/Object.cpp,289
+Object::Object(5,43
+void Object::draw(11,111
+void Object::outline(15,136
+void Object::setVisibility(19,164
+float Object::getX(24,221
+float Object::getY(25,272
+float Object::getZ(26,323
+float Object::getSize(27,374
+bool Object::isVisible(29,429
+Vector3 Object::getPosition(31,475
+
+graphics/VBO.cpp,72
+VBO::VBO(5,40
+void VBO::uploadVertices(11,133
+void VBO::draw(36,1132
+
+math/Frustum.cpp,115
+void Frustum::update(5,44
+float Frustum::distanceFromPlaneToPoint(55,1866
+bool Frustum::sphereInFrustum(60,2033
+
+math/Frustum.h,87
+#define FRUSTUM2,16
+class Frustum10,134
+        Plane planes[Frustum::planes20,359
+
+math/Matrix4x4f.cpp,735
+Matrix4x4f::Matrix4x4f(3,25
+void Matrix4x4f::identity(14,463
+void Matrix4x4f::translate(22,700
+void Matrix4x4f::translate_x(31,834
+void Matrix4x4f::translate_y(38,922
+void Matrix4x4f::translate_z(45,1010
+void Matrix4x4f::rotate(52,1098
+void Matrix4x4f::rotate_x(84,1750
+void Matrix4x4f::rotate_y(97,1955
+void Matrix4x4f::rotate_z(110,2160
+void Matrix4x4f::scale(123,2361
+void Matrix4x4f::transformPoint(132,2491
+void Matrix4x4f::transformVector(153,2836
+Matrix4x4f Matrix4x4f::operator + Matrix4x4f::operator +174,3159
+Matrix4x4f Matrix4x4f::operator - Matrix4x4f::operator -201,3901
+Matrix4x4f Matrix4x4f::operator * Matrix4x4f::operator *228,4643
+Matrix4x4f Matrix4x4f::operator * Matrix4x4f::operator *255,6275
+
+math/Matrix4x4f.h,188
+#define MATRIX4X4F10,430
+#define DEGTORAD(17,532
+#define RADTODEG(18,594
+class Matrix4x4f20,657
+        float m[Matrix4x4f::m24,689
+        Matrix4x4f(Matrix4x4f::Matrix4x4f26,711
+
+math/Vector3.cpp,347
+const Vector3 Vector3::zero 3,22
+const Scalar Vector3::Epsilon 4,68
+Vector3::Vector3(6,138
+Vector3::Vector3(10,162
+Vector3& Vector3::operator+=(Vector3::operator+=17,253
+Vector3& Vector3::operator-=(Vector3::operator-=25,385
+Vector3& Vector3::operator*=(Vector3::operator*=33,517
+Vector3& Vector3::operator/=(Vector3::operator/=41,623
+
+math/Vector3.h,672
+#define VECTOR311,254
+typedef float   Scalar;16,307
+typedef int       Bool;17,331
+class Vector319,356
+        Scalar x;Vector3::x23,385
+        Scalar y;Vector3::y24,403
+        Scalar z;Vector3::z25,421
+        static const Vector3 zero;Vector3::zero44,1083
+        static const Scalar   Epsilon;Vector3::Epsilon45,1118
+inline Bool Vector3::operator==(Vector3::operator==48,1161
+inline Bool Vector3::operator!=(Vector3::operator!=53,1287
+inline Vector3 Vector3::operator+(58,1413
+inline Vector3 Vector3::operator-(63,1543
+inline Vector3 Vector3::operator-(68,1673
+inline Vector3 Vector3::operator*(73,1750
+inline Vector3 Vector3::operator/(78,1854
+
+math/Vector3Util.cpp,188
+void Vector3Util::Clamp(3,26
+void Vector3Util::Normalize_s(15,224
+void Vector3Util::SetLength_s(27,391
+Vector3 Vector3Util::ToNormalized_s(39,582
+Vector3 Vector3Util::ToEuler(56,1054
+
+math/Vector3Util.h,490
+#define VECTOR3UTIL11,262
+class Vector3Util19,418
+inline Scalar Vector3Util::len(45,1441
+inline Scalar Vector3Util::len2(50,1568
+inline Scalar Vector3Util::dist(55,1690
+inline void Vector3Util::Normalize(60,1855
+inline void Vector3Util::SetLength(65,1933
+inline Scalar Vector3Util::Dot(70,2035
+inline Vector3 Vector3Util::ToNormalized(75,2177
+inline Vector3 Vector3Util::ToPolar(86,2576
+inline Vector3 Vector3Util::ToCartesian(94,2728
+inline Vector3 Vector3Util::Cross(102,2902
+
+resources/Conf.h,237
+#define DEF_UTIL_CONF2,22
+#define DEBUG 4,45
+#define WORLD_WIDTH 6,65
+#define WORLD_HEIGHT 7,90
+#define SCREEN_WIDTH 9,117
+#define SCREEN_HEIGHT 10,144
+#define GRID_UNIT 12,173
+#define USE_VBO 14,197
+#define DRAW_OUTLINE 15,219
+
+resources/Notifications.cpp,117
+unsigned const int Notifications::ON_MOUSE_LEFT_DOWN 3,28
+unsigned const int Notifications::ON_WINDOW_RESIZED 4,88
+
+resources/Notifications.h,241
+#define DEF_NOTIFICATIONS2,26
+class Notifications4,53
+        static unsigned const int ON_MOUSE_LEFT_DOWN;Notifications::ON_MOUSE_LEFT_DOWN8,88
+        static unsigned const int ON_WINDOW_RESIZED;Notifications::ON_WINDOW_RESIZED9,142
+
+resources/Structs.h,1248
+#define DEF_STRUCTS2,20
+#define X_POS 6,71
+#define Y_POS 7,87
+#define Z_POS 8,103
+#define U_POS 10,120
+#define V_POS 11,136
+#define R_POS 13,153
+#define G_POS 14,169
+#define B_POS 15,185
+#define A_POS 16,201
+#define BUFFER_OFFSET(18,218
+#define TO_GRID(19,264
+struct Plane21,327
+    float a;23,342
+    float b;24,355
+    float c;25,368
+    float d;26,381
+struct Point3f29,398
+    GLfloat x;31,415
+    GLfloat y;32,430
+    GLfloat z;33,445
+struct Vertex36,464
+    GLfloat location[location38,480
+    GLfloat tex[tex39,505
+    GLfloat normal[normal40,525
+    GLfloat color[color41,548
+    GLubyte padding[padding42,570
+struct Triangle45,666
+    int vertexIndices[vertexIndices47,684
+    Plane planeEquation;48,797
+    int neighbourIndices[neighbourIndices49,880
+    bool visible;50,977
+struct Tile53,1050
+    Tile *parent;parent55,1064
+    bool busy;56,1082
+    bool opened;57,1097
+    bool closed;58,1114
+    unsigned int f,59,1131
+    unsigned int f, g,59,1131
+    unsigned int f, g, h;59,1131
+    int x,60,1157
+    int x, y;60,1157
+struct Edge64,1183
+    int vertexIndices[vertexIndices66,1197
+    Point3f projections[projections67,1269
+struct Shadow71,1380
+    Edge *pEdges;pEdges73,1396
+
+scene/Camera.cpp,706
+Camera::Camera(5,43
+void Camera::draw(16,198
+void Camera::update(155,3774
+void Camera::updateViewFrustum(185,4698
+void Camera::setFocus(196,4946
+float Camera::getX(203,5055
+float Camera::getY(208,5104
+float Camera::getZ(213,5153
+void Camera::drawObject(218,5202
+void Camera::outlineObject(229,5399
+void Camera::drawAllMeshes(240,5602
+void Camera::outlineAllMeshes(248,5777
+void Camera::drawAllSprites(256,5958
+void Camera::outlineAllSprites(264,6138
+void Camera::drawAllLights(272,6324
+void Camera::outlineAllLights(280,6504
+void Camera::setupLight(288,6687
+void Camera::drawAllShadows(296,6832
+void Camera::updateMeshesVisibility(307,7134
+void Camera::updateSpritesVisibility(315,7390
+
+scene/Entity.cpp,265
+Entity::Entity(5,43
+void Entity::setPosition(11,126
+void Entity::setLightned(18,243
+float Entity::getX(20,297
+float Entity::getY(21,355
+float Entity::getZ(22,413
+float Entity::getSize(23,471
+bool Entity::isVisible(25,524
+Vector3 Entity::getPosition(27,580
+
+scene/World.cpp,402
+World::World(5,42
+void World::draw(9,62
+void World::update(14,139
+void World::updateMousePosition(24,330
+void World::dispatch(39,663
+void World::addPlayer(47,845
+void World::addEnemy(55,1088
+void World::addWallDecor(61,1274
+void World::addFloorDecor(68,1524
+void World::addLight(74,1721
+float World::getMouseX(80,1913
+float World::getMouseY(81,1957
+vector<Vector3*> World::getPath(83,2002
+
+scene/Camera.h,338
+#define DEF_CAMERA2,19
+class Camera21,396
+        Entity* focus;Camera::focus52,1383
+        Vector3 position;Camera::position54,1407
+        Frustum viewFrustum;Camera::viewFrustum56,1434
+        float speed;Camera::speed58,1464
+        float tolerance;Camera::tolerance59,1485
+        float inertia;Camera::inertia60,1510
+
+scene/Entity.h,224
+#define DEF_ENTITY2,19
+class Entity8,90
+        float size;Entity::size30,427
+        Vector3 position;Entity::position32,448
+        bool visible;Entity::visible37,490
+        bool lightned;Entity::lightned38,512
+
+scene/World.h,558
+#define DEF_WORLD2,18
+class World21,380
+        float mouseX;World::mouseX45,1016
+        float mouseY;World::mouseY46,1038
+        std::list<Dynamic*> dynamicList;World::dynamicList49,1095
+        std::list<Static*>  staticList;World::staticList50,1136
+        std::list<Mesh*>    meshList;World::meshList51,1176
+        std::list<Sprite*>  spriteList;World::spriteList52,1214
+        std::list<Light*>   lightList;World::lightList53,1254
+        Camera camera;World::camera55,1294
+        Pathfinder pathfinder;World::pathfinder56,1317
+
+scene/entity/Dynamic.cpp,248
+Dynamic::Dynamic(5,44
+void Dynamic::update(11,133
+void Dynamic::onNotify(15,171
+void Dynamic::move(19,224
+void Dynamic::resetDestination(39,613
+void Dynamic::setDestination(44,679
+void Dynamic::setPath(52,846
+bool Dynamic::isCanMove(60,969
+
+scene/entity/Static.cpp,106
+Static::Static(3,21
+int Static::getGridX(7,62
+int Static::getGridY(12,137
+int Static::getGridZ(17,212
+
+scene/entity/Dynamic.h,347
+#define DEF_DYNAMIC2,20
+class Dynamic 14,219
+        float speed;Dynamic::speed33,596
+        World *world;Dynamic::world35,618
+        std::vector<Vector3*> path;Dynamic::path40,656
+        Vector3 destination;Dynamic::destination42,693
+        Vector3 direction;Dynamic::direction43,722
+        bool canMove;Dynamic::canMove45,750
+
+scene/entity/Static.h,90
+#define DEF_STATIC2,19
+class Static 6,63
+        bool walkable;Static::walkable19,221
+
+scene/entity/dynamic/Enemy.cpp,46
+Enemy::Enemy(5,42
+void Enemy::update(14,203
+
+scene/entity/dynamic/Enemy.h,43
+#define DEF_ENEMY2,18
+class Enemy 10,146
+
+scene/entity/dynamic/Player.cpp,79
+Player::Player(5,43
+void Player::onNotify(14,206
+void Player::update(22,416
+
+scene/entity/dynamic/Player.h,45
+#define DEF_PLAYER2,19
+class Player 10,156
+
+scene/entity/static/Decor.cpp,50
+Decor::Decor(3,20
+bool Decor::isWalkable(12,166
+
+scene/entity/static/Decor.h,87
+#define DEF_DECOR2,18
+class Decor 8,82
+        bool walkable;Decor::walkable19,221
+
+scene/entity/static/Emitter.cpp,23
+Emitter::Emitter(5,44
+
+scene/entity/static/Emitter.h,45
+#define DEF_EMITTER2,20
+class Emitter 8,86

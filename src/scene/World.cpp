@@ -13,7 +13,7 @@ void World::draw()
 
 void World::update(float time)
 {
-    for (list<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
+    for (vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
     {
         (*i)->update(time);
     }
@@ -38,15 +38,15 @@ void World::updateMousePosition(float mouseScreenX, float mouseScreenY)
 
 void World::dispatch(unsigned const int type)
 {
-    for (list<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
+    for (vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
     {
         (*i)->onNotify(type);
     }
 }
 
-void World::addPlayer(bool focus)
+void World::addPlayer(float x, float z, bool focus)
 {
-    dynamicList.push_back(new Player(this, 512.f, 512.f, 64.f));
+    dynamicList.push_back(new Player(this, x, z, 64.f));
     meshList.push_back(new Mesh(dynamicList.back(), 64.f, 64.f, 1.f, 1.f, 0.f, 1.f));
 
     if (focus) camera.setFocus(dynamicList.back());
@@ -84,4 +84,3 @@ vector<Vector3*> World::getPath(Vector3 *position, float toX, float toY, float s
 {
     return pathfinder.getPath(position->x, position->z, toX, toY, s);
 }
-

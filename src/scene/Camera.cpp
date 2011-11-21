@@ -1,322 +1,328 @@
 #include "Camera.h"
+#include <cstdio>
 
 using namespace std;
 
 Camera::Camera()
 {
-    speed     = 50.f;
-    tolerance = 50.f;
-    inertia   = 0.3f;
+  speed     = 50.f;
+  tolerance = 50.f;
+  inertia   = 0.3f;
 
-    position.x = 0.f;
-    position.y = 0.f;
-    position.z = 0.f;
+  position.x = 0.f;
+  position.y = 0.f;
+  position.z = 0.f;
 }
 
-void Camera::draw(std::list<Mesh*> *meshes, std::list<Sprite*> *sprites, std::list<Light*> *lights)
+void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights)
 {
-    // Translate to camera's position
-    glPushMatrix();
-    glTranslatef(position.x * -1.f,  position.y * -1.f, position.z * -1.f);
+  // Reset matix
+  glLoadIdentity();
 
-    updateViewFrustum();
-    updateMeshesVisibility(meshes);
-    updateSpritesVisibility(sprites);
+  // Isometric angle
+  glRotatef(30.f, 1.f, 0.f, 0.f);
+  glRotatef(-45.f, 0.f, 1.f, 0.f);
 
-    // Use a black ambient color
-    GLfloat ambientColor[] = {0.0f, 0.0f, 0.0f, 1.0f};
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+  // Scale
+  glScaled(sqrt(1/2.0), sqrt(1/3.0), sqrt(1/2.0));
 
+  // Translate to camera's position
+  glPushMatrix();
+  glTranslatef(position.x * -1.f,  position.y * -1.f, position.z * -1.f);
 
-    // STEP 0: setup
-    // =============
+  updateViewFrustum();
+  updateMeshesVisibility(meshes);
+  updateSpritesVisibility(sprites);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
+  //Use a black ambient color
+  GLfloat ambientColor[] = {0.05f, 0.05f, 0.05f, 1.0f};
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
 
-    // STEP 1: render depth
-    // ====================
+  // STEP 0: setup
+  // =============
 
-    glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LEQUAL);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
 
-    glClear(GL_DEPTH_BUFFER_BIT);
+  // STEP 1: render depth
+  // ====================
 
-    glFrontFace(GL_CW);
-    drawAllMeshes(meshes);
-    drawAllSprites(sprites);
+  glDepthMask(GL_TRUE);
+  glDepthFunc(GL_LEQUAL);
+  glClear(GL_DEPTH_BUFFER_BIT);
+  glFrontFace(GL_CW);
+  drawAllMeshes(meshes);
+  drawAllSprites(sprites);
+  glDepthMask(GL_FALSE);
 
-    glDepthMask(GL_FALSE);
+
+  // STEP 2: loop through lights
+  // ===========================
 
 
-    // STEP 2: loop through lights
-    // ===========================
+  glEnable(GL_STENCIL_TEST);
 
-    glEnable(GL_STENCIL_TEST);
-
-    for (list<Light*>::iterator l = lights->begin(); l != lights->end(); ++ l)
+  for (vector<Light*>::iterator l = lights->begin(); l != lights->end(); ++ l)
     {
-        // TODO perfome culling on shadow volumes against view frustum
-        // TODO extrude shadow volume by the size of the light's radius
-        // http://http.developer.nvidia.com/GPUGems/gpugems_ch09.html SEC-9.5
+      // TODO perfome culling on shadow volumes against view frustum
+      // TODO extrude shadow volume by the size of the light's radius
+      // http://http.developer.nvidia.com/GPUGems/gpugems_ch09.html SEC-9.5
 
-        // Skeep this light if it's too far
-        if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
+      // Skeep this light if it's too far
+      if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
 
-        // STEP 3: render shadow volumes
-        // =============================
+      // STEP 3: render shadow volumes
+      // =============================
 
-        glClear(GL_STENCIL_BUFFER_BIT);
+      glClear(GL_STENCIL_BUFFER_BIT);
 
-        glDepthFunc(GL_LESS);
-        glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFFL);
+      glDepthFunc(GL_LESS);
+      glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFFL);
 
-        #ifdef GL_EXT_stencil_two_side && GL_EXT_stencil_wrap
+#ifdef GL_EXT_stencil_two_side && GL_EXT_stencil_wrap
 
-        // glEnable(GL_STENCIL_TEST_TWO_SIDE_EXT);
+      // glEnable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 
-        // glActiveStencilFaceEXT(GL_BACK);
-        // glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP_EXT);
+      // glActiveStencilFaceEXT(GL_BACK);
+      // glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP_EXT);
 
-        // glActiveStencilFaceEXT(GL_FRONT);
-        // glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP_EXT);
+      // glActiveStencilFaceEXT(GL_FRONT);
+      // glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP_EXT);
 
-        // drawAllShadows(meshes, *l);
+      // drawAllShadows(meshes, *l);
 
-        // glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
+      // glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 
-        #else
+#else
 
-        glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
-        glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
-        drawAllShadows(meshes, *l);
+      glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
+      glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
+      drawAllShadows(meshes, *l);
 
-        #endif
+#endif
 
 
-        // STEP 4: render the scene
-        // ========================
+      // STEP 4: render the scene
+      // ========================
 
-        glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-        glEnable(GL_BLEND);
-        glEnable(GL_COLOR_MATERIAL); // TODO avoid
+      glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
+      glEnable(GL_LIGHTING);
+      glEnable(GL_LIGHT0);
+      glEnable(GL_BLEND);
+      glEnable(GL_COLOR_MATERIAL); // TODO avoid
 
-        setupLight(*l);
+      setupLight(*l);
 
-        glStencilFunc(GL_EQUAL, 0, 0xFFFFFFFFL);
-        glBlendFunc(GL_ONE, GL_ONE);
-        glDepthFunc(GL_LEQUAL);
+      glStencilFunc(GL_EQUAL, 0, 0xFFFFFFFFL);
+      glBlendFunc(GL_ONE, GL_ONE);
+      glDepthFunc(GL_LEQUAL);
 
-        glFrontFace(GL_CW);
-        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-        drawAllMeshes(meshes);
-        drawAllSprites(sprites);
+      //      glFrontFace(GL_CW);
+      glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+      drawAllMeshes(meshes);
+      drawAllSprites(sprites);
 
-        glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_LIGHT0);
-        glDisable(GL_BLEND);
-        glDisable(GL_COLOR_MATERIAL);
+      glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
+      glDisable(GL_LIGHTING);
+      glDisable(GL_LIGHT0);
+      glDisable(GL_BLEND);
+      glDisable(GL_COLOR_MATERIAL);
     }
 
-    glDisable(GL_STENCIL_TEST);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
+  glDisable(GL_STENCIL_TEST);
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_CULL_FACE);
 
 
-    // STEP 4: wireframe
-    // =================
+  // STEP 4: wireframe
+  // =================
 
-    #if DRAW_OUTLINE
-    glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-    glEnable(GL_BLEND);
+#if DRAW_OUTLINE
+  glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
+  glEnable(GL_BLEND);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    outlineAllMeshes(meshes);
-    outlineAllSprites(sprites);
-    outlineAllLights(lights);
+  outlineAllMeshes(meshes);
+  outlineAllSprites(sprites);
+  outlineAllLights(lights);
 
-    glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-    glDisable(GL_BLEND);
-    #endif
+  glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
+  glDisable(GL_BLEND);
+#endif
 
-    glPopMatrix();
+  glPopMatrix();
 }
 
 void Camera::update(float time)
 {
-    if (position.x - focus->getX() > tolerance)
+  if (position.x - focus->getX() > tolerance)
     {
-        position.x -= (position.x - (focus->getX() + tolerance)) / (inertia / time);
+      position.x -= (position.x - (focus->getX() + tolerance)) / (inertia / time);
     }
-    else if (focus->getX() - position.x > tolerance)
+  else if (focus->getX() - position.x > tolerance)
     {
-        position.x += ((focus->getX() - tolerance) - position.x) / (inertia / time);
-    }
-
-    if (position.y - focus->getY() > tolerance)
-    {
-        position.y -= (position.y - (focus->getY() + tolerance)) / (inertia / time);
-    }
-    else if (focus->getY() - position.y > tolerance)
-    {
-        position.y += ((focus->getY() - tolerance) - position.y) / (inertia / time);
+      position.x += ((focus->getX() - tolerance) - position.x) / (inertia / time);
     }
 
-    if (position.z - focus->getZ() > tolerance)
+  if (position.y - focus->getY() > tolerance)
     {
-        position.z -= (position.z - (focus->getZ() + tolerance)) / (inertia / time);
+      position.y -= (position.y - (focus->getY() + tolerance)) / (inertia / time);
     }
-    else if (focus->getZ() - position.z > tolerance)
+  else if (focus->getY() - position.y > tolerance)
     {
-        position.z += ((focus->getZ() - tolerance) - position.z) / (inertia / time);
+      position.y += ((focus->getY() - tolerance) - position.y) / (inertia / time);
+    }
+
+  if (position.z - focus->getZ() > tolerance)
+    {
+      position.z -= (position.z - (focus->getZ() + tolerance)) / (inertia / time);
+    }
+  else if (focus->getZ() - position.z > tolerance)
+    {
+      position.z += ((focus->getZ() - tolerance) - position.z) / (inertia / time);
     }
 }
 
 void Camera::updateViewFrustum()
 {
-    Matrix4x4f projMatrix;
-    Matrix4x4f viewMatrix;
+  Matrix4x4f projMatrix;
+  Matrix4x4f viewMatrix;
 
-    glGetFloatv(GL_PROJECTION_MATRIX, projMatrix.m);
-    glGetFloatv(GL_MODELVIEW_MATRIX, viewMatrix.m);
+  glGetFloatv(GL_PROJECTION_MATRIX, projMatrix.m);
+  glGetFloatv(GL_MODELVIEW_MATRIX, viewMatrix.m);
 
-    viewFrustum.update(projMatrix * viewMatrix);
+  viewFrustum.update(projMatrix * viewMatrix);
 }
 
 void Camera::setFocus(Entity *e)
 {
-    focus = e;
-    position.x = e->getX();
-    position.z = e->getZ();
+  focus = e;
+  position.x = e->getX();
+  position.z = e->getZ();
 }
 
 float Camera::getX()
 {
-    return position.x;
+  return position.x;
 }
 
 float Camera::getY()
 {
-    return position.y;
+  return position.y;
 }
 
 float Camera::getZ()
 {
-    return position.z;
+  return position.z;
 }
 
 void Camera::drawObject(Object *o)
 {
-    if (o->isVisible())
+  if (o->isVisible())
     {
-        glPushMatrix();
-        glTranslatef(o->getX(), o->getY(), o->getZ());
-        o->draw();
-        glPopMatrix();
+      glPushMatrix();
+      glTranslatef(o->getX(), o->getY(), o->getZ());
+      o->draw();
+      glPopMatrix();
     }
 }
 
 void Camera::outlineObject(Object *o)
 {
-    if (o->isVisible())
+  if (o->isVisible())
     {
-        glPushMatrix();
-        glTranslatef(o->getX(), o->getY(), o->getZ());
-        o->outline();
-        glPopMatrix();
+      glPushMatrix();
+      glTranslatef(o->getX(), o->getY(), o->getZ());
+      o->outline();
+      glPopMatrix();
     }
 }
 
-void Camera::drawAllMeshes(std::list<Mesh*> *objects)
+void Camera::drawAllMeshes(std::vector<Mesh*> *objects)
 {
-    for (list<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        drawObject(*o);
+      drawObject(*o);
     }
 }
 
-void Camera::outlineAllMeshes(std::list<Mesh*> *objects)
+void Camera::outlineAllMeshes(std::vector<Mesh*> *objects)
 {
-    for (list<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        outlineObject(*o);
+      outlineObject(*o);
     }
 }
 
-void Camera::drawAllSprites(std::list<Sprite*> *objects)
+void Camera::drawAllSprites(std::vector<Sprite*> *objects)
 {
-    for (list<Sprite*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Sprite*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        drawObject(*o);
+      drawObject(*o);
     }
 }
 
-void Camera::outlineAllSprites(std::list<Sprite*> *objects)
+void Camera::outlineAllSprites(std::vector<Sprite*> *objects)
 {
-    for (list<Sprite*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Sprite*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        outlineObject(*o);
+      outlineObject(*o);
     }
 }
 
-void Camera::drawAllLights(std::list<Light*> *objects)
+void Camera::drawAllLights(std::vector<Light*> *objects)
 {
-    for (list<Light*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Light*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        outlineObject(*o);
+      outlineObject(*o);
     }
 }
 
-void Camera::outlineAllLights(std::list<Light*> *objects)
+void Camera::outlineAllLights(std::vector<Light*> *objects)
 {
-    for (list<Light*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Light*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        outlineObject(*o);
+      outlineObject(*o);
     }
 }
 
 void Camera::setupLight(Light *l)
 {
-    glPushMatrix();
-    glTranslatef(l->getX(), l->getY(), l->getZ());
-    l->setup();
-    glPopMatrix();
+  glPushMatrix();
+  glTranslatef(l->getX(), l->getY(), l->getZ());
+  l->setup();
+  glPopMatrix();
 }
 
-void Camera::drawAllShadows(std::list<Mesh*> *objects, Light *l)
+void Camera::drawAllShadows(std::vector<Mesh*> *objects, Light *l)
 {
-    for (list<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        glPushMatrix();
-        glTranslatef((*o)->getX(), (*o)->getY(), (*o)->getZ());
-        (*o)->drawShadow(l);
-        glPopMatrix();
+      glPushMatrix();
+      glTranslatef((*o)->getX(), (*o)->getY(), (*o)->getZ());
+      (*o)->drawShadow(l);
+      glPopMatrix();
     }
 }
 
-void Camera::updateMeshesVisibility(std::list<Mesh*> *objects)
+void Camera::updateMeshesVisibility(std::vector<Mesh*> *objects)
 {
-    for (list<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Mesh*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        (*o)->setVisibility(viewFrustum.sphereInFrustum((*o)->getPosition(), (*o)->getSize()));
+      (*o)->setVisibility(viewFrustum.sphereInFrustum((*o)->getPosition(), (*o)->getSize()));
     }
 }
 
-void Camera::updateSpritesVisibility(std::list<Sprite*> *objects)
+void Camera::updateSpritesVisibility(std::vector<Sprite*> *objects)
 {
-    for (list<Sprite*>::iterator o = objects->begin(); o != objects->end(); ++ o)
+  for (vector<Sprite*>::iterator o = objects->begin(); o != objects->end(); ++ o)
     {
-        (*o)->setVisibility(viewFrustum.sphereInFrustum((*o)->getPosition(), (*o)->getSize()));
+      (*o)->setVisibility(viewFrustum.sphereInFrustum((*o)->getPosition(), (*o)->getSize()));
     }
 }
 

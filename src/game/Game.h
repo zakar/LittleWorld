@@ -4,6 +4,7 @@
 #include "../resources/Conf.h"
 #include "../resources/Notifications.h"
 #include "../scene/World.h"
+#include "../tool/LuaInter.h"
 
 #include <SFML/System/Randomizer.hpp>
 #include <iostream>
@@ -24,6 +25,7 @@ class Game
     private:
 
         World world;
+	LuaInter lua;
 
         float windowScale;
         float windowPaddingLeft;
