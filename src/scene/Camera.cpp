@@ -14,19 +14,21 @@ Camera::Camera()
   position.z = 0.f;
 }
 
+Camera* Camera::Instance()
+{
+  static Camera* ins = new Camera;
+  return ins;
+}
+
 void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights)
 {
-  // Reset matix
   glLoadIdentity();
 
-  // Isometric angle
   glRotatef(30.f, 1.f, 0.f, 0.f);
   glRotatef(-45.f, 0.f, 1.f, 0.f);
 
-  // Scale
   glScaled(sqrt(1/2.0), sqrt(1/3.0), sqrt(1/2.0));
 
-  // Translate to camera's position
   glPushMatrix();
   glTranslatef(position.x * -1.f,  position.y * -1.f, position.z * -1.f);
 
@@ -34,22 +36,14 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
   updateMeshesVisibility(meshes);
   updateSpritesVisibility(sprites);
 
-  //Use a black ambient color
-  GLfloat ambientColor[] = {0.05f, 0.05f, 0.05f, 1.0f};
+  GLfloat ambientColor[] = {0.1f, 0.1f, 0.1f, 1.0f};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-
-
-  // STEP 0: setup
-  // =============
 
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
   glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
   glClear(GL_COLOR_BUFFER_BIT);
   glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-
-  // STEP 1: render depth
-  // ====================
 
   glDepthMask(GL_TRUE);
   glDepthFunc(GL_LEQUAL);
@@ -59,87 +53,36 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
   drawAllSprites(sprites);
   glDepthMask(GL_FALSE);
 
+  glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_BLEND);
+  glEnable(GL_COLOR_MATERIAL); 
 
-  // STEP 2: loop through lights
-  // ===========================
-
-
-  glEnable(GL_STENCIL_TEST);
-
-  for (vector<Light*>::iterator l = lights->begin(); l != lights->end(); ++ l)
-    {
-      // TODO perfome culling on shadow volumes against view frustum
-      // TODO extrude shadow volume by the size of the light's radius
-      // http://http.developer.nvidia.com/GPUGems/gpugems_ch09.html SEC-9.5
-
-      // Skeep this light if it's too far
-      if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
-
-      // STEP 3: render shadow volumes
-      // =============================
-
-      glClear(GL_STENCIL_BUFFER_BIT);
-
-      glDepthFunc(GL_LESS);
-      glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFFL);
-
-#ifdef GL_EXT_stencil_two_side && GL_EXT_stencil_wrap
-
-      // glEnable(GL_STENCIL_TEST_TWO_SIDE_EXT);
-
-      // glActiveStencilFaceEXT(GL_BACK);
-      // glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP_EXT);
-
-      // glActiveStencilFaceEXT(GL_FRONT);
-      // glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP_EXT);
-
-      // drawAllShadows(meshes, *l);
-
-      // glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
-
-#else
-
-      glStencilOpSeparate(GL_FRONT, GL_KEEP, GL_KEEP, GL_INCR);
-      glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
-      drawAllShadows(meshes, *l);
-
-#endif
+  glBlendFunc(GL_ONE, GL_ONE);
+  glDepthFunc(GL_EQUAL);
 
 
-      // STEP 4: render the scene
-      // ========================
+  for (vector<Light*>::iterator l = lights->begin(); l != lights->end(); ++ l) {
+    
+    if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
+    
+    setupLight(*l);
+    
+    drawAllMeshes(meshes);
+    drawAllSprites(sprites);
+  }
+ 
+  glDisable(GL_LIGHTING);
+  glDisable(GL_LIGHT0);
+  glDisable(GL_BLEND);
+  glDisable(GL_COLOR_MATERIAL);
 
-      glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-      glEnable(GL_LIGHTING);
-      glEnable(GL_LIGHT0);
-      glEnable(GL_BLEND);
-      glEnable(GL_COLOR_MATERIAL); // TODO avoid
-
-      setupLight(*l);
-
-      glStencilFunc(GL_EQUAL, 0, 0xFFFFFFFFL);
-      glBlendFunc(GL_ONE, GL_ONE);
-      glDepthFunc(GL_LEQUAL);
-
-      //      glFrontFace(GL_CW);
-      glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-      drawAllMeshes(meshes);
-      drawAllSprites(sprites);
-
-      glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-      glDisable(GL_LIGHTING);
-      glDisable(GL_LIGHT0);
-      glDisable(GL_BLEND);
-      glDisable(GL_COLOR_MATERIAL);
-    }
-
+  glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
   glDisable(GL_STENCIL_TEST);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 
-
-  // STEP 4: wireframe
-  // =================
 
 #if DRAW_OUTLINE
   glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);

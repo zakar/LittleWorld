@@ -7,35 +7,27 @@
 
 class Entity
 {
-    public:
+ public:
 
-        Entity(float s);
+  Entity(float s);
 
-        void setPosition(float x, float y, float z);
-        void setLightned(bool v);
+  float getX();
+  float getY();
+  float getZ();
 
-        bool isVisible();
+  float getSize();
+  Vector3 getPosition();
 
-        float getX();
-        float getY();
-        float getZ();
-        float getHeight();
-        float getSize();
+  void setLightned(bool v);
+  bool isVisible();
 
-        Vector3 getPosition();
+ protected:
+  float size;
+  Vector3 position;
 
-
-    protected:
-
-        float size;
-
-        Vector3 position;
-
-
-    private:
-
-        bool visible;
-        bool lightned;
+ private:
+  bool visible;
+  bool lightned;
 };
 
 #endif

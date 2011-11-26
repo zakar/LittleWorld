@@ -10,9 +10,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include <unistd.h>
+
 using namespace sf;
 
 float frameCount = 0.f;
+float FPS = 20.0;
 
 void setupWindow(float width, float height)
 {
@@ -94,7 +97,6 @@ int main()
     glClearStencil(GL_ZERO);
     glClearColor(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
 
-
     // Setup window
     setupWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -136,13 +138,10 @@ int main()
                     onWindowResized(event.Size.Width, event.Size.Height);
                     break;
 
-                case Event::MouseButtonPressed:
-                    game.onEvent(&event);
-                    break;
-
                 case Event::KeyPressed:
 		  game.onEvent(&event);
 
+                case Event::MouseButtonPressed:
                 case Event::LostFocus:
                 case Event::GainedFocus:
                 case Event::TextEntered:
@@ -160,25 +159,28 @@ int main()
             }
         }
 
+	if (gameClock.GetElapsedTime() > 1.0/FPS) {
 
-        //Update
-        game.update(gameClock.GetElapsedTime());
-        gameClock.Reset();
+	  //Update
+	  game.update(gameClock.GetElapsedTime());
+	  gameClock.Reset();
 
-        // Framerate
-        frameCount ++;
-        if (clock.GetElapsedTime() >= 1.f)
-        {
-            std::cout << "Framerate: " << (frameCount * clock.GetElapsedTime()) << " FPS" << std::endl;
-            frameCount = 0;
-            clock.Reset();
-        }
+	  // Framerate
+	  frameCount ++;
+	  if (clock.GetElapsedTime() >= 1.f)
+	    {
+	      std::cout << "Framerate: " << (frameCount * clock.GetElapsedTime()) << " FPS" << std::endl;
+	      frameCount = 0;
+	      clock.Reset();
+	    }
 
-        //Draw...
-        game.draw();
+	  //Draw...
+	  game.draw();
 
-        // Finally, display the rendered frame on screen
-        application.Display();
+	  // Finally, display the rendered frame on screen
+	  application.Display();
+	}
+	usleep((unsigned int)(100000 * 1.0/FPS));
     }
 
     return EXIT_SUCCESS;

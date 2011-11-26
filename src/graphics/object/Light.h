@@ -9,27 +9,27 @@
 
 class Light : public Object
 {
-    public:
+ public:
 
-        Light(Entity *e, float r, float g, float b);
+  Light(Entity *e, float r, float g, float b);
 
-        virtual void draw();
-        virtual void outline();
+  virtual void draw();
+  virtual void outline();
 
-        void setup();
+  void setup();
 
-        float getIntensityFromDistance(float d);
-        float getIntensityAtPosition(Vector3 p);
+  float getIntensityFromDistance(float d);
+  float getIntensityAtPosition(Vector3 p);
 
 
-    private:
+ private:
 
-        float red;
-        float green;
-        float blue;
-        float ca;
-        float la;
-        float qa;
+  float red;
+  float green;
+  float blue;
+  float ca;
+  float la;
+  float qa;
 };
 
 #endif

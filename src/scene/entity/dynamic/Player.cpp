@@ -1,48 +1,50 @@
 #include "Player.h"
-#include <cstdio>
 
 using namespace std;
 
-Player::Player(World *w, float x, float z, float s) : Dynamic(w, s)
+Player::Player(float x, float z, float s) : Dynamic(s)
 {
-  speed = 200.f;
-
   position.x = x;
   position.y = 0.f;
   position.z = z;
+  //  Manager::Instance()->updateGrid(position, s, 1);
+  timer.Reset();
 }
 
 void Player::onNotify(unsigned const int type)
 {
-  if (type ==  Notifications::ON_MOUSE_LEFT_DOWN) {
-    setPath(world->getPath(&position, world->getMouseX(), world->getMouseY(), getSize()));
-  }
+  switch (type) {
+  case ON_KEY_LEFT_DOWN:
+    speed.z = 300.f;
+    break;
 
-  if (type ==  Notifications::ON_KEY_LEFT_DOWN) {
-    setPath(world->getPath(&position, position.x, position.z + speed/2.f, getSize()));
-    puts("L");
-  }
+  case ON_KEY_RIGHT_DOWN:
+    speed.z = -300.f;
+    break;
 
-  if (type == Notifications::ON_KEY_RIGHT_DOWN) {
-    setPath(world->getPath(&position, position.x, position.z - speed/2.f, getSize()));
-    puts("R");
-  }
-	    
-  if (type == Notifications::ON_KEY_UP_DOWN) {
-    setPath(world->getPath(&position, position.x - speed/2.f, position.z, getSize()));
-    puts("U");
-  }
-  
-  if (type == Notifications::ON_KEY_DOWN_DOWN) {
-    setPath(world->getPath(&position, position.x + speed/2.f, position.z, getSize()));
-    puts("D");
-  }
+  case ON_KEY_UP_DOWN:
+    speed.x = -300.f;
+    break;
 
-  move(1.0);
+  case ON_KEY_DOWN_DOWN:
+    speed.x = 300.f;
+    break;
+  }
 }
 
 void Player::update(float time)
 {
-  move(time);
-}
+  if (Manager::Instance()->checkHit(position + speed*time, size)) {
+    speed = Vector3::zero;
+  }
 
+  // Manager::Instance()->updateGrid(position, size, 0);
+  // Manager::Instance()->updateGrid(position + speed*time, size, 1);
+  position += speed*time;
+  speed *= 0.8;
+
+  if (timer.GetElapsedTime() > 1.0) {
+    Manager::Instance()->updatePath(position);
+    timer.Reset();
+  }
+}

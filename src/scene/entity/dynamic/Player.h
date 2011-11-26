@@ -2,24 +2,21 @@
 #define DEF_PLAYER
 
 #include "../Dynamic.h"
-#include "../../World.h"
-#include "../../../resources/Notifications.h"
+#include "../../../resources/Conf.h"
+#include <SFML/System/Clock.hpp>
 
 #include <iostream>
 
 class Player : public Dynamic
 {
-    public:
+ public:
 
-        Player(World *w, float x, float z, float s);
+  Player(float x, float z, float s);
+  virtual void update(float time);
+  virtual void onNotify(unsigned const int type);
 
-        virtual void update(float time);
-        virtual void onNotify(unsigned const int type);
-
-
-    private:
-
-        void onMouseLeftDown();
+ private:
+  sf::Clock timer;
 };
 
 #endif

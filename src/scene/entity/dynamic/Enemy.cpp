@@ -2,25 +2,24 @@
 
 using namespace std;
 
-Enemy::Enemy(World *w, float x, float z, float s) : Dynamic(w, s)
+Enemy::Enemy(float x, float z, float s) : Dynamic(s)
 {
-    speed = 120.f;
-
-    position.x = x;
-    position.y = 0.f;
-    position.z = z;
+  position.x = x;
+  position.y = 0.f;
+  position.z = z;
+  //  Manager::Instance()->updateGrid(position, s, 1);
 }
 
 void Enemy::update(float time)
 {
-    if (!isCanMove() && sf::Randomizer::Random(0, 50) == 0)
-    {
-        float x = sf::Randomizer::Random(position.x - 600, position.x + 600);
-        float y = sf::Randomizer::Random(position.z - 600, position.z + 600);
-
-        setPath(world->getPath(&position, x, y, getSize()));
-    }
-
-    move(time);
+  Manager::Instance()->fetchSpeed(position, speed);
+  
+  if (Manager::Instance()->checkHit(position + speed*time, size)) {
+    speed = Vector3::zero;
+  }
+  
+  // Manager::Instance()->updateGrid(position, size, 0);
+  // Manager::Instance()->updateGrid(position + speed*time, size, 1);
+  position += speed * time;
 }
 

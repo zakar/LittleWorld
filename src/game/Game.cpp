@@ -15,13 +15,13 @@ void Game::init()
   lua.init(&world);
   lua.addEntity();
 
-  for (unsigned int x(0); x < WORLD_WIDTH / 128; x ++)
-    {
-      for (unsigned int y(0); y < WORLD_HEIGHT / 128; y ++)
-        {
-  	  world.addFloorDecor(x * 128.f, y * 128.f);
-        }
-    }
+  // for (unsigned int x(0); x < WORLD_WIDTH / 128; x ++)
+  //   {
+  //     for (unsigned int y(0); y < WORLD_HEIGHT / 128; y ++)
+  //       {
+  // 	  world.addFloorDecor(x * 128.f, y * 128.f);
+  //       }
+  //   }
 
 }
 
@@ -37,28 +37,21 @@ void Game::update(float time)
 
 void Game::onEvent(Event *event)
 {
-  // MOUSE
-  if (event->Type == Event::MouseButtonPressed) {
-    if (event->MouseButton.Button == Mouse::Left) {
-      world.dispatch(Notifications::ON_MOUSE_LEFT_DOWN);
-    }
-  }
-
   if (event->Type == Event::KeyPressed) {
     if (event->Key.Code == Key::Left) {
-      world.dispatch(Notifications::ON_KEY_LEFT_DOWN);
+      world.dispatch(ON_KEY_LEFT_DOWN);
     }
 
     if (event->Key.Code == Key::Right) {
-      world.dispatch(Notifications::ON_KEY_RIGHT_DOWN);
+      world.dispatch(ON_KEY_RIGHT_DOWN);
     }
 
     if (event->Key.Code == Key::Down) {
-      world.dispatch(Notifications::ON_KEY_DOWN_DOWN);
+      world.dispatch(ON_KEY_DOWN_DOWN);
     }
 
     if (event->Key.Code == Key::Up) {
-      world.dispatch(Notifications::ON_KEY_UP_DOWN);
+      world.dispatch(ON_KEY_UP_DOWN);
     }
 
   }

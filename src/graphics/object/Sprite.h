@@ -13,23 +13,25 @@
 
 class Sprite : public Object
 {
-    public:
+ public:
 
-        Sprite(Entity *e, float size, float height, float red, float green, float blue, float alpha);
+  Sprite(Entity *e, float size, float height, float red, float green, float blue, float alpha, GLuint texid);
 
-        virtual void draw();
-        virtual void outline();
+  virtual void draw();
+  virtual void outline();
 
 
-    private:
+ private:
 
-        unsigned int totalVertex;
-        unsigned int totalIndexes;
+  unsigned int totalVertex;
+  unsigned int totalIndexes;
 
-        Vertex vertices[4];
-        GLubyte indexes[6];
+  Vertex vertices[4];
+  GLubyte indexes[4];
 
-        VBO *vertexBufferObject;
+  GLuint texid;
+
+  VBO *vertexBufferObject;
 };
 
 #endif

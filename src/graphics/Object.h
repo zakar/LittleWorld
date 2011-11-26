@@ -3,35 +3,37 @@
 
 #include "../math/Vector3.h"
 #include "../scene/Entity.h"
+#include <SFML/Graphics.hpp>
 
 #include <iostream>
 
 class Object
 {
-    public:
+ public:
 
-        Object(Entity *e);
+  Object(Entity *e);
 
-        virtual void draw();
-        virtual void outline();
+  virtual void draw();
+  virtual void outline();
 
-        void setVisibility(bool v);
+  void setVisibility(bool v);
 
-        float getX();
-        float getY();
-        float getZ();
-        float getSize();
+  float getX();
+  float getY();
+  float getZ();
+  float getSize();
 
-        bool isVisible();
+  Vector3 getPosition();
 
-        Vector3 getPosition();
+  bool isVisible();
 
+  static void genTex2D(const char *file, GLuint *texid, GLsizei width, GLsizei height );
 
-    protected:
+ protected:
 
-        Entity *entity;
+  Entity *entity;
 
-        bool visible;
+  bool visible;
 };
 
 #endif

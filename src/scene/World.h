@@ -2,7 +2,6 @@
 #define DEF_WORLD
 
 #include "../resources/Conf.h"
-#include "../ai/Pathfinder.h"
 #include "../math/Vector3.h"
 
 #include "entity/Dynamic.h"
@@ -14,8 +13,8 @@
 #include "entity/static/Decor.h"
 
 #include "Camera.h"
+#include "../ai/Manager.h"
 
-#include <list>
 #include <vector>
 #include <iostream>
 
@@ -30,13 +29,11 @@ class World
         void updateMousePosition(float mouseScreenX, float mouseScreenY);
         void dispatch(unsigned const int type);
 
-        void addPlayer(float x, float z, bool focus);
+        void addPlayer(float x, float z);
         void addEnemy(float x, float z);
         void addWallDecor(float x, float z, float h);
-        void addFloorDecor(float x, float z);
+        void addFloorDecor(float x, float z, GLuint texid);
         void addLight(float x, float z, float y, float r, float g, float b);
-
-        std::vector<Vector3*> getPath(Vector3 *position, float toX, float toY, float s);
 
         float getMouseX();
         float getMouseY();
@@ -52,9 +49,6 @@ class World
         std::vector<Mesh*>    meshList;
         std::vector<Sprite*>  spriteList;
         std::vector<Light*>   lightList;
-
-        Camera camera;
-        Pathfinder pathfinder;
 };
 
 #endif

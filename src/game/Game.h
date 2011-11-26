@@ -11,25 +11,25 @@
 
 class Game
 {
-    public:
+ public:
 
-        Game();
+  Game();
 
-        void init();
-        void draw();
-        void update(float time);
-        void onEvent(sf::Event *event);
-        void setMousePosition(unsigned int x, unsigned int y);
+  void init();
+  void draw();
+  void update(float time);
+  void onEvent(sf::Event *event);
+  void setMousePosition(unsigned int x, unsigned int y);
 
 
-    private:
+ private:
 
-        World world;
-	LuaInter lua;
+  World world;
+  LuaInter lua;
 
-        float windowScale;
-        float windowPaddingLeft;
-        float windowPaddingTop;
+  float windowScale;
+  float windowPaddingLeft;
+  float windowPaddingTop;
 };
 
 #endif

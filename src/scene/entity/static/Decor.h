@@ -7,16 +7,8 @@
 
 class Decor : public Static
 {
-    public:
-
-        Decor(float x, float z, float s, bool w);
-
-        bool isWalkable();
-
-
-    protected:
-
-        bool walkable;
+ public:
+  Decor(float x, float z, float s, bool w);
 };
 
 #endif

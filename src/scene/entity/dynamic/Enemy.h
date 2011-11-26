@@ -9,11 +9,11 @@
 
 class Enemy : public Dynamic
 {
-    public:
+ public:
 
-        Enemy(World *w, float x, float z, float s);
+  Enemy(float x, float z, float s);
 
-        virtual void update(float time);
+  virtual void update(float time);
 };
 
 #endif

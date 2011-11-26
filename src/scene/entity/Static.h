@@ -2,21 +2,17 @@
 #define DEF_STATIC
 
 #include "../Entity.h"
+#include "../../ai/Manager.h"
 
 class Static : public Entity
 {
-    public:
+ public:
+  Static(float s, bool b);
+  virtual void update(float time);
 
-        Static(float s);
-
-        int getGridX();
-        int getGridY();
-        int getGridZ();
-
-
-    private:
-
-        bool walkable;
+ private:
+  bool walkable;
+  bool isCanWalk();
 };
 
 #endif

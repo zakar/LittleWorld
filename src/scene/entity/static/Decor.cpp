@@ -1,13 +1,12 @@
 #include "Decor.h"
 
-Decor::Decor(float x, float z, float s, bool w) : Static(s)
+Decor::Decor(float x, float z, float s, bool w) : Static(s, w)
 {
-    position.x = x;
-    position.y = 0.f;
-    position.z = z;
+  position.x = x;
+  position.y = 0.f;
+  position.z = z;
 
-    walkable = w;
+  if (!w)
+    Manager::Instance()->updateGrid(position, s, 1);
 }
-
-bool Decor::isWalkable() { return walkable; }
 

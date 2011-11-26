@@ -21,44 +21,45 @@
 
 class Camera
 {
-    public:
+ public:
 
-        Camera();
+  static Camera* Instance();
 
-        void update(float time);
-        void draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights);
-        void setFocus(Entity *o);
+  void update(float time);
+  void draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights);
+  void setFocus(Entity *o);
 
-        float getX();
-        float getY();
-        float getZ();
+  float getX();
+  float getY();
+  float getZ();
 
 
-    private:
+ private:
+  Camera();
 
-        void drawObject(Object *o);
-        void outlineObject(Object *o);
-        void drawAllMeshes(std::vector<Mesh*> *objects);
-        void outlineAllMeshes(std::vector<Mesh*> *objects);
-        void drawAllSprites(std::vector<Sprite*> *objects);
-        void outlineAllSprites(std::vector<Sprite*> *objects);
-        void drawAllLights(std::vector<Light*> *objects);
-        void outlineAllLights(std::vector<Light*> *objects);
-        void drawAllShadows(std::vector<Mesh*> *objects, Light *l);
-        void updateMeshesVisibility(std::vector<Mesh*> *objects);
-        void updateSpritesVisibility(std::vector<Sprite*> *objects);
-        void updateViewFrustum();
-        void setupLight(Light *l);
+  void drawObject(Object *o);
+  void outlineObject(Object *o);
+  void drawAllMeshes(std::vector<Mesh*> *objects);
+  void outlineAllMeshes(std::vector<Mesh*> *objects);
+  void drawAllSprites(std::vector<Sprite*> *objects);
+  void outlineAllSprites(std::vector<Sprite*> *objects);
+  void drawAllLights(std::vector<Light*> *objects);
+  void outlineAllLights(std::vector<Light*> *objects);
+  void drawAllShadows(std::vector<Mesh*> *objects, Light *l);
+  void updateMeshesVisibility(std::vector<Mesh*> *objects);
+  void updateSpritesVisibility(std::vector<Sprite*> *objects);
+  void updateViewFrustum();
+  void setupLight(Light *l);
 
-        Entity* focus;
+  Entity* focus;
 
-        Vector3 position;
+  Vector3 position;
 
-        Frustum viewFrustum;
+  Frustum viewFrustum;
 
-        float speed;
-        float tolerance;
-        float inertia;
+  float speed;
+  float tolerance;
+  float inertia;
 };
 
 #endif

@@ -1,21 +1,16 @@
 #include "Static.h"
 
-Static::Static(float s) : Entity(s)
+Static::Static(float s, bool b) : Entity(s)
 {
+  walkable = b;
 }
 
-int Static::getGridX()
+bool Static::isCanWalk()
 {
-    return floor((position.x + 64.f) / 128.f);
+  return walkable;
 }
 
-int Static::getGridY()
+void Static::update(float time)
 {
-    return floor((position.y + 64.f) / 128.f);
-}
-
-int Static::getGridZ()
-{
-    return floor((position.z + 64.f) / 128.f);
 }
 

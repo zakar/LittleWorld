@@ -12,31 +12,29 @@
 
 class Mesh : public Object
 {
-    public:
+ public:
 
-        Mesh(Entity *e, float size, float height, float red, float green, float blue, float alpha);
+  Mesh(Entity *e, float size, float height, float red, float green, float blue, float alpha);
 
-        virtual void draw();
-        virtual void outline();
+  virtual void draw();
+  virtual void outline();
 
-        //bool readObject(const char filename); // TODO
+  void drawShadow(Light *pLight);
 
-        void drawShadow(Light *pLight);
+ private:
 
-    private:
+  void updatePlaneEquations();
+  void updateConnectivity();
 
-        void updatePlaneEquations();
-        void updateConnectivity();
+  unsigned int totalVertex;
+  unsigned int totalTriangles;
+  unsigned int totalIndexes;
 
-        unsigned int totalVertex;
-        unsigned int totalTriangles;
-        unsigned int totalIndexes;
+  Vertex vertices[24];
+  Triangle triangles[12];
+  GLubyte indexes[36];
 
-        Vertex vertices[24];
-        Triangle triangles[12];
-        GLubyte indexes[36];
-
-        VBO *vertexBufferObject;
+  VBO *vertexBufferObject;
 };
 
 #endif

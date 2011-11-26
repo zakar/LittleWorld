@@ -4,45 +4,23 @@
 #include "../Entity.h"
 #include "../../math/Vector3.h"
 #include "../../math/Vector3Util.h"
-#include "../../ai/Pathfinder.h"
+#include "../../ai/Manager.h"
 
 #include <iostream>
-#include <vector>
 
 class World;
 
 class Dynamic : public Entity
 {
-    public:
+ public:
 
-        Dynamic(World *w, float s);
+  Dynamic(float s);
 
-        virtual void update(float time);
-        virtual void onNotify(unsigned const int type);
+  virtual void update(float time);
+  virtual void onNotify(unsigned const int type);
 
-        void move(float time);
-        void setDestination(Vector3 *d);
-        void setPath(std::vector<Vector3*> p);
-        void resetDestination();
-
-
-    protected:
-
-        bool isCanMove();
-
-        float speed;
-
-        World *world;
-
-
-    private:
-
-        std::vector<Vector3*> path;
-
-        Vector3 destination;
-        Vector3 direction;
-
-        bool canMove;
+ protected:
+  Vector3 speed;
 };
 
 #endif

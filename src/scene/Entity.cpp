@@ -4,15 +4,8 @@ using namespace std;
 
 Entity::Entity(float s) : size(s)
 {
-    visible  = false;
-    lightned = false;
-}
-
-void Entity::setPosition(float x, float y, float z)
-{
-    position.x = x;
-    position.y = y;
-    position.z = z;
+  visible  = false;
+  lightned = false;
 }
 
 void Entity::setLightned(bool v)   { lightned = v; }

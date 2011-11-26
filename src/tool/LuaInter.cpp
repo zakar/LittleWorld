@@ -2,6 +2,19 @@
 
 static World* world;
 
+static int addTexture(lua_State *L)
+{
+  GLuint texid;
+  GLsizei width, height;
+
+  width = lua_tointeger(L, 2);
+  height = lua_tointeger(L, 3);
+  Object::genTex2D(lua_tostring(L, 1), &texid, width, height);
+  lua_settop(L, 0);
+  lua_pushinteger(L, texid);
+  return 1;
+}
+    
 static int addWallDecor(lua_State *L)
 {
   float x, z, s;
@@ -18,8 +31,7 @@ static int addPlayer(lua_State *L)
   bool b;
   x = lua_tonumber(L, 1);
   z = lua_tonumber(L, 2);
-  b = lua_toboolean(L, 3);
-  world->addPlayer(x, z, b);
+  world->addPlayer(x, z);
   return 0;
 }
 
@@ -35,9 +47,11 @@ static int addEnemy(lua_State *L)
 static int addFloorDecor(lua_State *L)
 {
   float x, z;
+  int texid;
   x = lua_tonumber(L, 1);
   z = lua_tonumber(L, 2);
-  world->addFloorDecor(x, z);
+  texid = lua_tointeger(L, 3);
+  world->addFloorDecor(x, z, texid);
   return 0;
 }
 
@@ -60,6 +74,7 @@ static const luaL_Reg worldfunc[] = {
   {"addFloorDecor", addFloorDecor},
   {"addPlayer", addPlayer},
   {"addEnemy", addEnemy},
+  {"addTexture", addTexture},
   {NULL, NULL}
 };
 

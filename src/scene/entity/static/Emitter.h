@@ -7,9 +7,9 @@
 
 class Emitter : public Static
 {
-    public:
+ public:
 
-        Emitter(float x, float y, float z);
+  Emitter(float x, float y, float z);
 };
 
 #endif
