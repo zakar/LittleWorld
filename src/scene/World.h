@@ -29,10 +29,14 @@ class World
         void updateMousePosition(float mouseScreenX, float mouseScreenY);
         void dispatch(unsigned const int type);
 
-        void addPlayer(float x, float z);
-        void addEnemy(float x, float z);
-        void addWallDecor(float x, float z, float h);
-        void addFloorDecor(float x, float z, GLuint texid);
+	Entity* addPlayer(float x, float z, float size);
+	Entity* addEnemy(float x, float z, float size);
+	Entity* addWallDecor(float x, float z, float size);
+	Entity* addFloorDecor(float x, float z, float size);
+
+	void addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *texCoord);
+	void addMesh(Entity *e, float size, float height, float *RGBA);
+
         void addLight(float x, float z, float y, float r, float g, float b);
 
         float getMouseX();

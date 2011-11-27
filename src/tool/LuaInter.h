@@ -6,17 +6,24 @@ extern "C" {
 #include <lua/lualib.h>
 #include <lua/lauxlib.h>
 }
-#include "../scene/World.h"
-#include <cstdio>
+
+class World;
+class Vector3;
 
 class LuaInter
 {
  public:
-  LuaInter();
+  static LuaInter *Instance();
+
   void init(World* w);
-  void addEntity();
+  void addEntity(void);
+
+  void getPlayTexid(const Vector3 &speed, int *texid);
+  void getEnemyTexid(const Vector3 &speed, int *texid);
+  void getFloorTexid(int *texid);
   
  private:
+  LuaInter();
   lua_State *L;
 };
 

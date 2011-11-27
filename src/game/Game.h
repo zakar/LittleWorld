@@ -25,7 +25,6 @@ class Game
  private:
 
   World world;
-  LuaInter lua;
 
   float windowScale;
   float windowPaddingLeft;

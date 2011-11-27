@@ -21,5 +21,7 @@ void Enemy::update(float time)
   // Manager::Instance()->updateGrid(position, size, 0);
   // Manager::Instance()->updateGrid(position + speed*time, size, 1);
   position += speed * time;
+
+  LuaInter::Instance()->getEnemyTexid(position, &texid);
 }
 

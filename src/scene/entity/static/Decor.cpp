@@ -6,6 +6,8 @@ Decor::Decor(float x, float z, float s, bool w) : Static(s, w)
   position.y = 0.f;
   position.z = z;
 
+  LuaInter::Instance()->getFloorTexid(&texid);
+
   if (!w)
     Manager::Instance()->updateGrid(position, s, 1);
 }

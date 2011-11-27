@@ -12,17 +12,7 @@ Game::Game()
 
 void Game::init()
 {
-  lua.init(&world);
-  lua.addEntity();
-
-  // for (unsigned int x(0); x < WORLD_WIDTH / 128; x ++)
-  //   {
-  //     for (unsigned int y(0); y < WORLD_HEIGHT / 128; y ++)
-  //       {
-  // 	  world.addFloorDecor(x * 128.f, y * 128.f);
-  //       }
-  //   }
-
+  LuaInter::Instance()->init(&world);
 }
 
 void Game::draw()

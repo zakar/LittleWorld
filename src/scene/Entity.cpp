@@ -19,3 +19,4 @@ bool Entity::isVisible()           { return visible; }
 
 Vector3 Entity::getPosition()      { return position; }
 
+int Entity::getTexid()             { return texid; }

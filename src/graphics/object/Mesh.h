@@ -14,10 +14,12 @@ class Mesh : public Object
 {
  public:
 
-  Mesh(Entity *e, float size, float height, float red, float green, float blue, float alpha);
+  Mesh(Entity *e);
 
   virtual void draw();
   virtual void outline();
+
+  void setData(float size, float height, float *RGBA);
 
   void drawShadow(Light *pLight);
 

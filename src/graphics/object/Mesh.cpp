@@ -2,7 +2,11 @@
 
 using namespace std;
 
-Mesh::Mesh(Entity *e, float size, float height, float red, float green, float blue, float alpha) : Object(e)
+Mesh::Mesh(Entity *e) : Object(e)
+{
+}
+
+void Mesh::setData(float size, float height, float *RGBA)
 {
   totalVertex = 24;
   totalTriangles = 12;
@@ -284,19 +288,14 @@ Mesh::Mesh(Entity *e, float size, float height, float red, float green, float bl
   // Colors
   for (int i = 0; i < totalVertex; i++)
     {
-      vertices[i].color[0] = red;
-      vertices[i].color[1] = green;
-      vertices[i].color[2] = blue;
-      vertices[i].color[3] = alpha;
+      vertices[i].color[0] = RGBA[0];
+      vertices[i].color[1] = RGBA[1];
+      vertices[i].color[2] = RGBA[2];
+      vertices[i].color[3] = RGBA[3];
     }
 
   updatePlaneEquations();
   updateConnectivity();
-
-#if USE_VBO
-  vertexBufferObject = new VBO(totalVertex, totalIndexes);
-  vertexBufferObject->uploadVertices(vertices, indexes);
-#endif
 }
 
 void Mesh::updatePlaneEquations()

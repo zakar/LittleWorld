@@ -15,11 +15,12 @@ class Sprite : public Object
 {
  public:
 
-  Sprite(Entity *e, float size, float height, float red, float green, float blue, float alpha, GLuint texid);
+  Sprite(Entity *e);
 
   virtual void draw();
   virtual void outline();
 
+  void setData(float *RGBA, int totalVertex, float *vertex, float *texCoord);
 
  private:
 
@@ -28,8 +29,6 @@ class Sprite : public Object
 
   Vertex vertices[4];
   GLubyte indexes[4];
-
-  GLuint texid;
 
   VBO *vertexBufferObject;
 };

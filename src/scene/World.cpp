@@ -29,39 +29,6 @@ void World::dispatch(unsigned const int type)
     }
 }
 
-void World::addPlayer(float x, float z)
-{
-  dynamicList.push_back(new Player(x, z, 64.f));
-  meshList.push_back(new Mesh(dynamicList.back(), 64.f, 64.f, 1.f, 1.f, 0.f, 1.f));
-
-  Camera::Instance()->setFocus(dynamicList.back());
-}
-
-void World::addEnemy(float x, float z)
-{
-  dynamicList.push_back(new Enemy(x, z, 32.f));
-  meshList.push_back(new Mesh(dynamicList.back(), 32.f, 32.f, 1.f, 0.f, 0.f, 1.f));
-}
-
-void World::addWallDecor(float x, float z, float h)
-{
-  staticList.push_back(new Decor(x, z, 128.f, false));
-  meshList.push_back(new Mesh(staticList.back(), 128.f, h, 0.4f, 0.4f, 0.4f, 1.f));
-}
-
-void World::addFloorDecor(float x, float z, GLuint texid)
-{
-  staticList.push_back(new Decor(x, z, 128.f, true));
-  spriteList.push_back(new Sprite(staticList.back(), 128.f, 0.f, 0.9f, 0.9f, 0.9f, 1.f, texid));
-}
-
-void World::addLight(float x, float y, float z, float r, float g, float b)
-{
-  staticList.push_back(new Emitter(x, y, z));
-  lightList.push_back(new Light(staticList.back(), r, g, b));
-}
-
-
 float World::getMouseX() { return mouseX; }
 float World::getMouseY() { return mouseY; }
 
@@ -79,3 +46,52 @@ void World::updateMousePosition(float mouseScreenX, float mouseScreenY)
   mouseX += Camera::Instance()->getX();
   mouseY += Camera::Instance()->getZ();
 }
+
+
+Entity* World::addPlayer(float x, float z, float size)
+{
+  dynamicList.push_back(new Player(x, z, size));
+  Camera::Instance()->setFocus(dynamicList.back());
+  return dynamicList.back();
+}
+
+Entity* World::addEnemy(float x, float z, float size)
+{
+  dynamicList.push_back(new Enemy(x, z, size));
+  return dynamicList.back();
+}
+
+Entity* World::addWallDecor(float x, float z, float size)
+{
+  staticList.push_back(new Decor(x, z, size, false));
+  return staticList.back();
+}
+
+Entity* World::addFloorDecor(float x, float z, float size)
+{
+  staticList.push_back(new Decor(x, z, size, true));
+  return staticList.back();
+}
+
+void World::addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *texCoord)
+{
+  Sprite *sprite = new Sprite(e);
+  sprite->setData(RGBA, totalVertex, vertex, texCoord);
+  spriteList.push_back(sprite);
+}
+
+void World::addMesh(Entity *e, float size, float height, float *RGBA)
+{
+  Mesh *mesh = new Mesh(e);
+  mesh->setData(size, height, RGBA);
+  meshList.push_back(mesh);
+}
+
+
+void World::addLight(float x, float y, float z, float r, float g, float b)
+{
+  staticList.push_back(new Emitter(x, y, z));
+  lightList.push_back(new Light(staticList.back(), r, g, b));
+}
+
+

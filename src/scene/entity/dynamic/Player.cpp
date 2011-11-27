@@ -37,11 +37,13 @@ void Player::update(float time)
   if (Manager::Instance()->checkHit(position + speed*time, size)) {
     speed = Vector3::zero;
   }
-
+  
   // Manager::Instance()->updateGrid(position, size, 0);
   // Manager::Instance()->updateGrid(position + speed*time, size, 1);
   position += speed*time;
   speed *= 0.8;
+
+  LuaInter::Instance()->getPlayTexid(position, &texid);
 
   if (timer.GetElapsedTime() > 1.0) {
     Manager::Instance()->updatePath(position);
