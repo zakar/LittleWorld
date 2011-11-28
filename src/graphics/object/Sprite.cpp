@@ -6,7 +6,7 @@ Sprite::Sprite(Entity *e) : Object(e)
 {
 }
 
-void Sprite::setData(float *RGBA, int totalVertex, float *vertex, float *texCoord)
+void Sprite::setData(float *RGBA, int totalVertex, float *vertex, float *texCoord, float *normal)
 {
   this->totalVertex = totalVertex;
   this->totalIndexes = totalVertex;
@@ -19,14 +19,13 @@ void Sprite::setData(float *RGBA, int totalVertex, float *vertex, float *texCoor
     vertices[i].tex[U_POS] = texCoord[2*i];
     vertices[i].tex[V_POS] = texCoord[2*i+1];
 
-    vertices[0].normal[X_POS]   = 0.f;
-    vertices[0].normal[Y_POS]   = 1.f;
-    vertices[0].normal[Z_POS]   = 0.f;
+    vertices[i].normal[X_POS]   = normal[3*i];
+    vertices[i].normal[Y_POS]   = normal[3*i+1];
+    vertices[i].normal[Z_POS]   = normal[3*i+2];
   }
 
   for (int i = 0; i < totalVertex; i++) {
     indexes[i] = i;
-
     vertices[i].color[0] = RGBA[0];
     vertices[i].color[1] = RGBA[1];
     vertices[i].color[2] = RGBA[2];
@@ -35,11 +34,10 @@ void Sprite::setData(float *RGBA, int totalVertex, float *vertex, float *texCoor
 }
 
 
-
 void Sprite::draw()
 {
   glEnable(GL_TEXTURE_2D);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glBindTexture(GL_TEXTURE_2D, entity->getTexid());
   glBegin(GL_QUADS);
   for (unsigned int i = 0; i < totalIndexes; ++i) {

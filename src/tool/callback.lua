@@ -1,6 +1,9 @@
 function playerTexFunc(sx, sy)
-   
-   return TexId.player
+   if math.abs(sx) > 1 then 
+      return TexId.player0;
+   else
+      return TexId.player1;
+   end
 end
 
 function enemyTexFunc(sx, sy)

@@ -34,7 +34,7 @@ class World
 	Entity* addWallDecor(float x, float z, float size);
 	Entity* addFloorDecor(float x, float z, float size);
 
-	void addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *texCoord);
+	void addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *texCoord, float *normal);
 	void addMesh(Entity *e, float size, float height, float *RGBA);
 
         void addLight(float x, float z, float y, float r, float g, float b);

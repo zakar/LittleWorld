@@ -2,5 +2,5 @@ Icon*
 .*
 !.gitignore
 build
-./src/note
-./design
+src/note
+design/*

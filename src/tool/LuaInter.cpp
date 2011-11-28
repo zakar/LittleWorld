@@ -37,6 +37,7 @@ static void addSprite(lua_State *L, Entity *e)
   float RGBA[4];
   float vertex[12];
   float texCoord[8];
+  float normal[12];
   int totalVertex;
   lua_settop(L, 1);
 
@@ -47,10 +48,12 @@ static void addSprite(lua_State *L, Entity *e)
   fillTablef(L, vertex);
   lua_getfield(L, 1, "texCoord");
   fillTablef(L, texCoord);
+  lua_getfield(L, 1, "normal");
+  fillTablef(L, normal);
   lua_getfield(L, 1, "totalVertex");
   totalVertex = lua_tointeger(L, lua_gettop(L));
   
-  world->addSprite(e, RGBA, totalVertex, vertex, texCoord);
+  world->addSprite(e, RGBA, totalVertex, vertex, texCoord, normal);
 }
 
 static void addMesh(lua_State *L, Entity *e)
@@ -69,15 +72,10 @@ static void addMesh(lua_State *L, Entity *e)
 
 static int addEntity(lua_State *L)
 {
-
-
   float x, z, s;
   char entity[8], object[8];
   lua_getfield(L, 1, "x");
   x = lua_tonumber(L, 2);
-
-
-
   lua_getfield(L, 1, "z");
   z = lua_tonumber(L, 3);
   lua_getfield(L, 1, "s");
@@ -151,8 +149,6 @@ void LuaInter::init(World* w)
   if (luaL_dofile(L, "./src/tool/callback.lua"))
     lua_error(L);
 
-
-
   lua_getglobal(L, "initWorld");
   if (lua_pcall(L, 0, 0, 0)) 
     lua_error(L);
@@ -167,7 +163,7 @@ void LuaInter::getPlayTexid(const Vector3 &speed, int *texid)
   if (lua_pcall(L, 2, 1, 0))
     lua_error(L);
   
-  *texid = lua_tointeger(L, 1);
+  *texid = lua_tointeger(L, lua_gettop(L));
   lua_pop(L, 1);
 }
 
@@ -179,7 +175,7 @@ void LuaInter::getEnemyTexid(const Vector3 &speed, int *texid)
   if (lua_pcall(L, 2, 1, 0))
       lua_error(L);
   
-  *texid = lua_tointeger(L, 1);
+  *texid = lua_tointeger(L, lua_gettop(L));
   lua_pop(L, 1);
 }
 
@@ -189,6 +185,6 @@ void LuaInter::getFloorTexid(int *texid)
   if (lua_pcall(L, 0, 1, 0))
     lua_error(L);
   
-  *texid = lua_tointeger(L, 1);
+  *texid = lua_tointeger(L, lua_gettop(L));
   lua_pop(L, 1);
 }

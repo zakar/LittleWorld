@@ -23,15 +23,15 @@ Camera* Camera::Instance()
 void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights)
 {
   glLoadIdentity();
-
   glRotatef(30.f, 1.f, 0.f, 0.f);
   glRotatef(-45.f, 0.f, 1.f, 0.f);
-
   glScaled(sqrt(1/2.0), sqrt(1/3.0), sqrt(1/2.0));
 
   glPushMatrix();
   glTranslatef(position.x * -1.f,  position.y * -1.f, position.z * -1.f);
 
+  glFrontFace(GL_CW);
+  glEnable(GL_CULL_FACE);
   updateViewFrustum();
   updateMeshesVisibility(meshes);
   updateSpritesVisibility(sprites);
@@ -40,20 +40,16 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-  glClear(GL_COLOR_BUFFER_BIT);
-  glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-
   glDepthMask(GL_TRUE);
   glDepthFunc(GL_LEQUAL);
   glClear(GL_DEPTH_BUFFER_BIT);
-  glFrontFace(GL_CW);
   drawAllMeshes(meshes);
   drawAllSprites(sprites);
   glDepthMask(GL_FALSE);
 
   glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
+  glClear(GL_COLOR_BUFFER_BIT);
+
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   glEnable(GL_BLEND);
@@ -61,8 +57,7 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
 
   glBlendFunc(GL_ONE, GL_ONE);
   glDepthFunc(GL_EQUAL);
-
-
+  
   for (vector<Light*>::iterator l = lights->begin(); l != lights->end(); ++ l) {
     
     if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
@@ -79,7 +74,6 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
   glDisable(GL_COLOR_MATERIAL);
 
   glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-  glDisable(GL_STENCIL_TEST);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 

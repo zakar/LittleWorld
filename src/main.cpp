@@ -15,7 +15,7 @@
 using namespace sf;
 
 float frameCount = 0.f;
-float FPS = 20.0;
+float FPS = 60.0;
 
 void setupWindow(float width, float height)
 {
@@ -78,13 +78,6 @@ int main()
     glCullFace(GL_FRONT);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-    // Vertex buffer objects
-    #if USE_VBO
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    #endif
-
     // Default values
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
@@ -94,7 +87,6 @@ int main()
 
     // Clear values
     glClearDepth(GL_ONE);
-    glClearStencil(GL_ZERO);
     glClearColor(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
 
     // Setup window
