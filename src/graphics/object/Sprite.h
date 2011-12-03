@@ -20,7 +20,8 @@ class Sprite : public Object
   virtual void draw();
   virtual void outline();
 
-  void setData(float *RGBA, int totalVertex, float *vertex, float *texCoord, float *normal);
+  void setData(float *RGBA, int totalVertex, float *vertex, float *normal);
+  void getTexFromEntity(void);
 
  private:
 

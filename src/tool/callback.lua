@@ -1,9 +1,8 @@
 function playerTexFunc(sx, sy)
-   if math.abs(sx) > 1 then 
-      return TexId.player0;
-   else
-      return TexId.player1;
-   end
+   local idx
+   if math.abs(sx) > 1 then idx = 1 else idx = 2 end
+      
+   return Tex['player'].id[idx], Tex['player'].texCoord[idx]
 end
 
 function enemyTexFunc(sx, sy)
@@ -11,5 +10,5 @@ function enemyTexFunc(sx, sy)
 end
 
 function floorTexFunc()
-   return TexId.map
+   return Tex['map'].id[1], Tex['map'].texCoord[1]
 end

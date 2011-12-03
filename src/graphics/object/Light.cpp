@@ -8,7 +8,7 @@ Light::Light(Entity *e, float r, float g, float b) : Object(e)
   green = g;
   blue  = b;
 
-  ca = 0.5f;
+  ca = 0.1f;
   la = 0.004f;
   qa = 0.00005f;
 }
@@ -71,19 +71,19 @@ void Light::outline()
   glEnd();
 }
 
-void Light::setup()
+void Light::setup(int id)
 {
   GLfloat LightPos[] = {0.f, 0.f, 0.f, 1.f}; // TODO 100.f was the y position ...
   GLfloat LightAmb[] = {red, green, blue, 1.f};
   GLfloat LightDif[] = {red, green, blue, 1.f};
 
-  glLightfv(GL_LIGHT0, GL_POSITION, LightPos);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDif);
+  glLightfv(GL_LIGHT0 + id, GL_POSITION, LightPos);
+  glLightfv(GL_LIGHT0 + id, GL_AMBIENT, LightAmb);
+  glLightfv(GL_LIGHT0 + id, GL_DIFFUSE, LightDif);
 
-  glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, ca);
-  glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, la);
-  glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, qa);
+  glLightf(GL_LIGHT0 + id, GL_CONSTANT_ATTENUATION, ca);
+  glLightf(GL_LIGHT0 + id, GL_LINEAR_ATTENUATION, la);
+  glLightf(GL_LIGHT0 + id, GL_QUADRATIC_ATTENUATION, qa);
 }
 
 float Light::getIntensityFromDistance(float distance)

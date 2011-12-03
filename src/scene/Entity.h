@@ -19,16 +19,18 @@ class Entity
   float getSize();
   Vector3 getPosition();
 
-  int getTexid();
-
   void setLightned(bool v);
   bool isVisible();
+
+ public:
+  //data that object need
+  int texid;
+  float tex[4][2];
 
  protected:
   float size;
   Vector3 position;
-  int texid;
-
+  
  private:
   bool visible;
   bool lightned;

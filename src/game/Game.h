@@ -5,6 +5,7 @@
 #include "../resources/Notifications.h"
 #include "../scene/World.h"
 #include "../tool/LuaInter.h"
+#include "../scene/Camera.h"
 
 #include <SFML/System/Randomizer.hpp>
 #include <iostream>

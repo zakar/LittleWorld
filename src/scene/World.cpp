@@ -73,10 +73,10 @@ Entity* World::addFloorDecor(float x, float z, float size)
   return staticList.back();
 }
 
-void World::addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *texCoord, float *normal)
+void World::addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *normal)
 {
   Sprite *sprite = new Sprite(e);
-  sprite->setData(RGBA, totalVertex, vertex, texCoord, normal);
+  sprite->setData(RGBA, totalVertex, vertex, normal);
   spriteList.push_back(sprite);
 }
 

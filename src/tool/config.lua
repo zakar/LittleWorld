@@ -1,13 +1,17 @@
 WORLD_WIDTH = 2048
 WORLD_HEIGHT = 2048
 
-TexId = {}
+Tex = {}
 
 function initWorld()
 
-   TexId['map'] = World.addTexture('./design/map.png', 64, 64)
-   TexId['player0'] = World.addTexture('./design/player1.png', 128, 128)
-   TexId['player1'] = World.addTexture('./design/player2.png', 128, 128)
+   Tex['map'] = { id = { World.addTexture('./design/map.png', 64, 64) }, 
+		  texCoord = { { 0.3, 0.0,  0.3, 0.3,  0.0, 0.3,  0.0, 0.0 } } }
+
+   Tex['player'] = { id = { World.addTexture('./design/player1.png', 128, 128),
+			    World.addTexture('./design/player2.png', 128, 128) },
+		     texCoord = { { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 },
+				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } } }
 
    for i = 0, WORLD_WIDTH / 128 do
       for j = 0, WORLD_HEIGHT / 128 do 
@@ -17,11 +21,10 @@ function initWorld()
 			  RGBA = { 1.0, 1.0, 1.0, 1.0 },
 			  totalVertex = 4,
 			  vertex = { 64,0,64, 64,0,-64, -64,0,-64, -64,0,64},
-			  normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, },
-			  texCoord = { 0.3, 0.0,  0.3, 0.3,  0.0, 0.3,  0.0, 0.0 }  }
+			  normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
+
       end
    end
-
 
 
    World.addEntity{ Entity = "Player",
@@ -30,8 +33,7 @@ function initWorld()
 		    RGBA = { 1.0, 1.0, 1.0, 1.0 },
 		    totalVertex = 4,
 		    vertex = { 128,0,0,  128,256,0,  -128,256,0,  -128,0,0 },
-		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, },
-		    texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } }
+		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
 
 
    for i = 1,20 do
@@ -43,30 +45,33 @@ function initWorld()
 		       height = 32 }
    end
 
-   World.addEntity{ Entity = "Wall", 
-		    x = 1.0 * 128.0,  z = 4.0 * 128.0, s = 128.0,
-		    Object = "Mesh",
-		    RGBA = { 0.3, 0.3, 0.3, 1.0 },
-		    size = 128.0, 
-		    height = 64.0 }
+   local WallPos = { { x = 1.0, z = 4.0 },
+		     { x = 4.0, z = 1.0 },
+		     { x = 8.0, z = 7.0 },
+		     { x = 6.0, z = 6.0 },
+		     { x = 5.0, z = 6.0 },
+		     { x = 5.0, z = 5.0 },
+		     { x = 5.0, z = 8.0 },
+		     { x = 4.0, z = 8.0 },
+		     { x = 12.0, z = 8.0 },
+		     { x = 11.0, z = 5.0 },
+		     { x = 15.0, z = 10.0 },
+		     { x = 10.0, z = 13.0 }
+		   }
+
+   for i = 1, #WallPos do
+      World.addEntity{ Entity = "Wall", 
+		       x = WallPos[i].x * 128.0,  z = WallPos[i].z * 128.0,  s = 128.0,
+		       Object = "Mesh",
+		       RGBA = { 0.3, 0.3, 0.3, 1.0 },
+		       size = 128.0, 
+		       height = 64.0 }
+   end
+
 
    World.addLight(256.0, 250.0, 256.0, 1.0, 0.0, 1.0)    
    World.addLight(1280.0, 120.0, 512.0, 0.0, 0.0, 1.0)   
    World.addLight(1024.0, 120.0, 1024.0, 0.0, 1.0, 0.0)  
+   World.addLight(640.0, 120.0, 512.0, 1.0, 1.0, 1.0)    
 end
 
-
-
--- World.addWallDecor(4.0 * 128.0, 1.0 * 128.0, 128.0)
--- World.addWallDecor(8.0 * 128.0, 7.0 * 128.0, 32.0)
--- World.addWallDecor(6.0 * 128.0, 6.0 * 128.0, 48.0)
--- World.addWallDecor(5.0 * 128.0, 6.0 * 128.0, 96.0)
--- World.addWallDecor(5.0 * 128.0, 5.0 * 128.0, 64.0)
--- World.addWallDecor(5.0 * 128.0, 8.0 * 128.0, 64.0)
--- World.addWallDecor(4.0 * 128.0, 8.0 * 128.0, 64.0)
--- World.addWallDecor(12.0 * 128.0, 8.0 * 128.0, 24.0)
--- World.addWallDecor(11.0 * 128.0, 5.0 * 128.0, 48.0)
--- World.addWallDecor(15.0 * 128.0, 10.0 * 128.0, 32.0)
--- World.addWallDecor(10.0 * 128.0, 13.0 * 128.0, 64.0)
-
---   World.addLight(640.0, 120.0, 512.0, 1.0, 1.0, 1.0)    

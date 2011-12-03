@@ -16,7 +16,7 @@ class Light : public Object
   virtual void draw();
   virtual void outline();
 
-  void setup();
+  void setup(int id);
 
   float getIntensityFromDistance(float d);
   float getIntensityAtPosition(Vector3 p);

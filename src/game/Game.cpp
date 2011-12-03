@@ -30,20 +30,35 @@ void Game::onEvent(Event *event)
   if (event->Type == Event::KeyPressed) {
     if (event->Key.Code == Key::Left) {
       world.dispatch(ON_KEY_LEFT_DOWN);
-    }
+    } else
 
     if (event->Key.Code == Key::Right) {
       world.dispatch(ON_KEY_RIGHT_DOWN);
-    }
+    } else
 
     if (event->Key.Code == Key::Down) {
       world.dispatch(ON_KEY_DOWN_DOWN);
-    }
+    } else
 
     if (event->Key.Code == Key::Up) {
       world.dispatch(ON_KEY_UP_DOWN);
-    }
+    } else
 
+    if (event->Key.Code == Key::I) {
+      Camera::Instance()->rotateCamera(1.0, 0.0);
+    } else
+
+    if (event->Key.Code == Key::K) {
+      Camera::Instance()->rotateCamera(-1.0, 0.0);
+    } else
+
+    if (event->Key.Code == Key::J) {
+      Camera::Instance()->rotateCamera(0.0, 1.0);
+    } else
+
+    if (event->Key.Code == Key::L) {
+      Camera::Instance()->rotateCamera(0.0, -1.0);
+    }
   }
 
   // RESIZE

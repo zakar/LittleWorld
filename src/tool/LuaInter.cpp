@@ -36,24 +36,20 @@ static void addSprite(lua_State *L, Entity *e)
 {
   float RGBA[4];
   float vertex[12];
-  float texCoord[8];
   float normal[12];
   int totalVertex;
   lua_settop(L, 1);
 
   lua_getfield(L, 1, "RGBA");
-
   fillTablef(L, RGBA);
   lua_getfield(L, 1, "vertex");
   fillTablef(L, vertex);
-  lua_getfield(L, 1, "texCoord");
-  fillTablef(L, texCoord);
   lua_getfield(L, 1, "normal");
   fillTablef(L, normal);
   lua_getfield(L, 1, "totalVertex");
   totalVertex = lua_tointeger(L, lua_gettop(L));
   
-  world->addSprite(e, RGBA, totalVertex, vertex, texCoord, normal);
+  world->addSprite(e, RGBA, totalVertex, vertex, normal);
 }
 
 static void addMesh(lua_State *L, Entity *e)
@@ -84,7 +80,6 @@ static int addEntity(lua_State *L)
   strcpy(entity, lua_tostring(L, 5));
   lua_getfield(L, 1, "Object");
   strcpy(object, lua_tostring(L, 6));
-
 
   Entity *e;
   if (strcmp(entity, "Player") == 0) 
@@ -155,19 +150,32 @@ void LuaInter::init(World* w)
   lua_settop(L, 0);
 }
 
-void LuaInter::getPlayTexid(const Vector3 &speed, int *texid)
+void LuaInter::getPlayTex(const Vector3 &speed, int *texid, float tex[][2])
 {
   lua_getglobal(L, "playerTexFunc");
   lua_pushnumber(L, speed.x);
   lua_pushnumber(L, speed.z);
-  if (lua_pcall(L, 2, 1, 0))
+  if (lua_pcall(L, 2, 2, 0))
     lua_error(L);
+
+  int bottom = lua_gettop(L);
+  *texid = lua_tointeger(L, -2);
+  for (int i = 0; i < 4; ++i) {
+    lua_pushinteger(L, 2*i + 1);
+    lua_gettable(L, bottom);
+    tex[i][0] = lua_tonumber(L, -1);
+
+    lua_pushinteger(L, 2*i + 2);
+    lua_gettable(L, bottom);
+    tex[i][1] = lua_tonumber(L, -1);
+
+    lua_pop(L, 2);
+  }
   
-  *texid = lua_tointeger(L, lua_gettop(L));
-  lua_pop(L, 1);
+  lua_pop(L, 2);
 }
 
-void LuaInter::getEnemyTexid(const Vector3 &speed, int *texid)
+void LuaInter::getEnemyTex(const Vector3 &speed, int *texid)
 {
   lua_getglobal(L, "enemyTexFunc");
   lua_pushnumber(L, speed.x);
@@ -179,12 +187,26 @@ void LuaInter::getEnemyTexid(const Vector3 &speed, int *texid)
   lua_pop(L, 1);
 }
 
-void LuaInter::getFloorTexid(int *texid)
+void LuaInter::getFloorTex(int *texid, float tex[][2])
 {
   lua_getglobal(L, "floorTexFunc");
-  if (lua_pcall(L, 0, 1, 0))
+  if (lua_pcall(L, 0, 2, 0))
     lua_error(L);
+
+  int bottom = lua_gettop(L);
   
-  *texid = lua_tointeger(L, lua_gettop(L));
-  lua_pop(L, 1);
+  *texid = lua_tointeger(L, -2);
+  for (int i = 0; i < 4; ++i) {
+    lua_pushinteger(L, 2*i + 1);
+    lua_gettable(L, bottom);
+    tex[i][0] = lua_tonumber(L, -1);
+
+    lua_pushinteger(L, 2*i + 2);
+    lua_gettable(L, bottom);
+    tex[i][1] = lua_tonumber(L, -1);
+
+    lua_pop(L, 2);
+  }
+  
+  lua_pop(L, 2);
 }

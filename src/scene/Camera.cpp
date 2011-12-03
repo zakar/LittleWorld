@@ -12,6 +12,9 @@ Camera::Camera()
   position.x = 0.f;
   position.y = 0.f;
   position.z = 0.f;
+
+  angleX = 30.0;
+  angleY = -45.0;
 }
 
 Camera* Camera::Instance()
@@ -23,8 +26,8 @@ Camera* Camera::Instance()
 void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std::vector<Light*> *lights)
 {
   glLoadIdentity();
-  glRotatef(30.f, 1.f, 0.f, 0.f);
-  glRotatef(-45.f, 0.f, 1.f, 0.f);
+  glRotatef(angleX, 1.f, 0.f, 0.f);
+  glRotatef(angleY, 0.f, 1.f, 0.f);
   glScaled(sqrt(1/2.0), sqrt(1/3.0), sqrt(1/2.0));
 
   glPushMatrix();
@@ -46,31 +49,30 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
   drawAllMeshes(meshes);
   drawAllSprites(sprites);
   glDepthMask(GL_FALSE);
+  
+  int id = 0;
+   for (vector<Light*>::iterator l = lights->begin(); l != lights->end(); ++l, ++id) {
+    if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
+    setupLight(*l, id);
+    glEnable(GL_LIGHT0 + id);
+  }
 
   glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
   glClear(GL_COLOR_BUFFER_BIT);
 
   glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_BLEND);
+  //  glEnable(GL_BLEND);
   glEnable(GL_COLOR_MATERIAL); 
 
-  glBlendFunc(GL_ONE, GL_ONE);
+  //  glBlendFunc(GL_ONE, GL_ONE);
   glDepthFunc(GL_EQUAL);
-  
-  for (vector<Light*>::iterator l = lights->begin(); l != lights->end(); ++ l) {
-    
-    if ((*l)->getIntensityAtPosition(position) < 0.004f) continue;
-    
-    setupLight(*l);
-    
-    drawAllMeshes(meshes);
-    drawAllSprites(sprites);
-  }
+
+  drawAllMeshes(meshes);
+  drawAllSprites(sprites);
  
   glDisable(GL_LIGHTING);
   glDisable(GL_LIGHT0);
-  glDisable(GL_BLEND);
+  //  glDisable(GL_BLEND);
   glDisable(GL_COLOR_MATERIAL);
 
   glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
@@ -228,11 +230,11 @@ void Camera::outlineAllLights(std::vector<Light*> *objects)
     }
 }
 
-void Camera::setupLight(Light *l)
+void Camera::setupLight(Light *l, int id)
 {
   glPushMatrix();
   glTranslatef(l->getX(), l->getY(), l->getZ());
-  l->setup();
+  l->setup(id);
   glPopMatrix();
 }
 
@@ -263,3 +265,13 @@ void Camera::updateSpritesVisibility(std::vector<Sprite*> *objects)
     }
 }
 
+void Camera::rotateCamera(float detx, float dety)
+{
+  angleX += detx;
+  if (angleX > 360.0) angleX -= 360.0;
+  if (angleX < 0.0) angleX += 360.0;
+
+  angleY += dety;
+  if (angleY > 360.0) angleY -= 360.0;
+  if (angleY < 0.0) angleY += 360.0;
+}

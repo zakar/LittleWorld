@@ -33,6 +33,7 @@ class Camera
   float getY();
   float getZ();
 
+  void rotateCamera(float detx, float dety);
 
  private:
   Camera();
@@ -49,7 +50,7 @@ class Camera
   void updateMeshesVisibility(std::vector<Mesh*> *objects);
   void updateSpritesVisibility(std::vector<Sprite*> *objects);
   void updateViewFrustum();
-  void setupLight(Light *l);
+  void setupLight(Light *l, int id);
 
   Entity* focus;
 
@@ -60,6 +61,9 @@ class Camera
   float speed;
   float tolerance;
   float inertia;
+
+  float angleX;
+  float angleY;
 };
 
 #endif

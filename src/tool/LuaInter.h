@@ -18,9 +18,9 @@ class LuaInter
   void init(World* w);
   void addEntity(void);
 
-  void getPlayTexid(const Vector3 &speed, int *texid);
-  void getEnemyTexid(const Vector3 &speed, int *texid);
-  void getFloorTexid(int *texid);
+  void getPlayTex(const Vector3 &speed, int *texid, float tex[][2]);
+  void getEnemyTex(const Vector3 &speed, int *texid);
+  void getFloorTex(int *texid, float tex[][2]);
   
  private:
   LuaInter();
