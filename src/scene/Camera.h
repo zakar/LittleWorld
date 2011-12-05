@@ -58,7 +58,6 @@ class Camera
 
   Frustum viewFrustum;
 
-  float speed;
   float tolerance;
   float inertia;
 

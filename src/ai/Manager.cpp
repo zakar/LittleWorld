@@ -76,6 +76,7 @@ void Manager::fetchSpeed(const Vector3 &position, Vector3 &speed)
 
   speed.x = w[idx][0] * 100.0;
   speed.z = w[idx][1] * 100.0;
+  speed.y = 0.0;
 }
 
 void Manager::calPosition(int &x, int &y, const Vector3 &position)

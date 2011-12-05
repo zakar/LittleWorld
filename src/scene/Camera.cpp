@@ -5,7 +5,6 @@ using namespace std;
 
 Camera::Camera()
 {
-  speed     = 50.f;
   tolerance = 50.f;
   inertia   = 0.3f;
 
@@ -33,14 +32,17 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
   glPushMatrix();
   glTranslatef(position.x * -1.f,  position.y * -1.f, position.z * -1.f);
 
-  glFrontFace(GL_CW);
-  glEnable(GL_CULL_FACE);
   updateViewFrustum();
   updateMeshesVisibility(meshes);
   updateSpritesVisibility(sprites);
 
   GLfloat ambientColor[] = {0.1f, 0.1f, 0.1f, 1.0f};
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+
+  glFrontFace(GL_CW);
+  glEnable(GL_CULL_FACE);
+
+  glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
 
   glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
@@ -57,25 +59,22 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
     glEnable(GL_LIGHT0 + id);
   }
 
+  glEnable(GL_LIGHTING);
+  glEnable(GL_COLOR_MATERIAL); 
+  glDepthFunc(GL_EQUAL);
+
   glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
   glClear(GL_COLOR_BUFFER_BIT);
-
-  glEnable(GL_LIGHTING);
-  //  glEnable(GL_BLEND);
-  glEnable(GL_COLOR_MATERIAL); 
-
-  //  glBlendFunc(GL_ONE, GL_ONE);
-  glDepthFunc(GL_EQUAL);
 
   drawAllMeshes(meshes);
   drawAllSprites(sprites);
  
   glDisable(GL_LIGHTING);
-  glDisable(GL_LIGHT0);
-  //  glDisable(GL_BLEND);
+  for (int i = 0; i < id; ++i) 
+    glDisable(GL_LIGHT0 + i);
   glDisable(GL_COLOR_MATERIAL);
 
-  glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
+
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 

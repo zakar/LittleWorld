@@ -5,23 +5,32 @@ Tex = {}
 
 function initWorld()
 
-   Tex['map'] = { id = { World.addTexture('./design/map.png', 64, 64) }, 
-		  texCoord = { { 0.3, 0.0,  0.3, 0.3,  0.0, 0.3,  0.0, 0.0 } } }
+   Tex['map'] = { id = { World.addTexture('./design/Kud01.png', 256, 256) }, 
+		  texCoord = { { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } } }
 
    Tex['player'] = { id = { World.addTexture('./design/player1.png', 128, 128),
 			    World.addTexture('./design/player2.png', 128, 128) },
 		     texCoord = { { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 },
 				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } } }
 
+   -- World.addEntity{ Entity = "Floor", 
+   -- 		    x = 512, z = 512, s = 2048,
+   -- 		    Object = "Sprite",
+   -- 		    RGBA = { 1.0, 1.0, 1.0, 1.0 },
+   -- 		    totalVertex = 4,
+   -- 		    vertex = { 1024,0,1024, 1024,0,-1024, -1024,0,-1024, -1024,0,1024},
+   -- 		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
+
+
    for i = 0, WORLD_WIDTH / 128 do
       for j = 0, WORLD_HEIGHT / 128 do 
-	 World.addEntity{ Entity = "Floor", 
-			  x = i*128, z = j*128, s = 128,
-			  Object = "Sprite",
-			  RGBA = { 1.0, 1.0, 1.0, 1.0 },
-			  totalVertex = 4,
-			  vertex = { 64,0,64, 64,0,-64, -64,0,-64, -64,0,64},
-			  normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
+   	 World.addEntity{ Entity = "Floor", 
+   			  x = i*128, z = j*128, s = 128,
+   			  Object = "Sprite",
+   			  RGBA = { 1.0, 1.0, 1.0, 1.0 },
+   			  totalVertex = 4,
+   			  vertex = { 64,0,64, 64,0,-64, -64,0,-64, -64,0,64},
+   			  normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
 
       end
    end

@@ -363,9 +363,6 @@ void Mesh::updateConnectivity()
 
 void Mesh::draw()
 {
-#if USE_VBO
-  vertexBufferObject->draw();
-#else
   glBegin(GL_TRIANGLES);
   for (unsigned int i = 0; i < totalTriangles; i ++)
     {
@@ -379,7 +376,6 @@ void Mesh::draw()
         }
     }
   glEnd();
-#endif
 }
 
 void Mesh::outline()

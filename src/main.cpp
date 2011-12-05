@@ -159,12 +159,11 @@ int main()
 
 	  // Framerate
 	  frameCount ++;
-	  if (clock.GetElapsedTime() >= 1.f)
-	    {
-	      std::cout << "Framerate: " << (frameCount * clock.GetElapsedTime()) << " FPS" << std::endl;
-	      frameCount = 0;
-	      clock.Reset();
-	    }
+	  if (clock.GetElapsedTime() >= 1.f) {
+	    std::cout << "Framerate: " << (frameCount * clock.GetElapsedTime()) << " FPS" << std::endl;
+	    frameCount = 0;
+	    clock.Reset();
+	  }
 
 	  //Draw...
 	  game.draw();

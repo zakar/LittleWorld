@@ -14,6 +14,7 @@
 
 #define USE_VBO false
 #define DRAW_OUTLINE false
+#define USE_TEX true
 
 enum NOTIFICATION {
   ON_KEY_LEFT_DOWN,

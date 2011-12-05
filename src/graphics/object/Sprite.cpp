@@ -41,20 +41,31 @@ void Sprite::setData(float *RGBA, int totalVertex, float *vertex, float *normal)
 
 void Sprite::draw()
 {
+#if USE_TEX
   getTexFromEntity();
   glEnable(GL_TEXTURE_2D);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glBindTexture(GL_TEXTURE_2D, entity->texid);
+#endif
+
   glBegin(GL_QUADS);
   for (unsigned int i = 0; i < totalIndexes; ++i) {
+    int idx = indexes[i];
 
-    glColor4f(vertices[indexes[i]].color[0], vertices[indexes[i]].color[1], vertices[indexes[i]].color[2], vertices[indexes[i]].color[3]);
-    glNormal3f(vertices[indexes[i]].normal[0], vertices[indexes[i]].normal[1], vertices[indexes[i]].normal[2]);
-    glTexCoord2f(vertices[indexes[i]].tex[0], vertices[indexes[i]].tex[1]);
-    glVertex3f(vertices[indexes[i]].location[0], vertices[indexes[i]].location[1], vertices[indexes[i]].location[2]);
+    glColor4f(vertices[idx].color[0], vertices[idx].color[1], vertices[idx].color[2], vertices[idx].color[3]);
+    glNormal3f(vertices[idx].normal[0], vertices[idx].normal[1], vertices[idx].normal[2]);
+
+#if USE_TEX
+    glTexCoord2f(vertices[idx].tex[0], vertices[idx].tex[1]);
+#endif
+
+    glVertex3f(vertices[idx].location[0], vertices[idx].location[1], vertices[idx].location[2]);
   }
   glEnd();
+
+#if USE_TEX
   glDisable(GL_TEXTURE_2D);
+#endif
 }
 
 void Sprite::outline()
