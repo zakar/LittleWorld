@@ -18,6 +18,8 @@ class Dynamic : public Entity
 
   virtual void update(float time);
   virtual void onNotify(unsigned const int type);
+  virtual int getID();
+  virtual int echo();
 
  protected:
   Vector3 speed;

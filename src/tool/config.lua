@@ -5,7 +5,7 @@ Tex = {}
 
 function initWorld()
 
-   Tex['map'] = { id = { World.addTexture('./design/Kud01.png', 256, 256) }, 
+   Tex['map'] = { id = { World.addTexture('./design/grass.jpg', 128, 128) }, 
 		  texCoord = { { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } } }
 
    Tex['player'] = { id = { World.addTexture('./design/player1.png', 128, 128),
@@ -37,7 +37,7 @@ function initWorld()
 
 
    World.addEntity{ Entity = "Player",
-		    x = 512, z = 512, s = 64,
+		    x = 512, z = 512, s = 128,
 		    Object = "Sprite",
 		    RGBA = { 1.0, 1.0, 1.0, 1.0 },
 		    totalVertex = 4,

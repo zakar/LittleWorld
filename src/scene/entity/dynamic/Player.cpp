@@ -7,8 +7,7 @@ Player::Player(float x, float z, float s) : Dynamic(s)
   position.x = x;
   position.y = 0.f;
   position.z = z;
-  //  Manager::Instance()->updateGrid(position, s, 1);
-  timer.Reset();
+  Manager::Instance()->updateGrid(position, s, 3 );
 }
 
 void Player::onNotify(unsigned const int type)
@@ -38,17 +37,12 @@ void Player::onNotify(unsigned const int type)
 
 void Player::update(float time)
 {
-  if (Manager::Instance()->checkHit(position + speed*time, size)) {
-    speed = Vector3::zero;
-  }
-  
+  Manager::Instance()->updateGrid(position, size, 0);
   position += speed*time;
   speed *= 0.8;
+  Manager::Instance()->updateGrid(position, size, 3);
 
   LuaInter::Instance()->getPlayTex(speed, &texid, tex);
-
-  if (timer.GetElapsedTime() > 1.0) {
-    Manager::Instance()->updatePath(position);
-    timer.Reset();
-  }
 }
+
+int Player::echo() {  return 0;  }

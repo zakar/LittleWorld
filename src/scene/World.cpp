@@ -11,8 +11,46 @@ void World::draw()
   Camera::Instance()->draw(&meshList, &spriteList, &lightList);
 }
 
+// void World::update(float time)
+// {
+//   for (vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
+//     {
+//       (*i)->update(time);
+//     }
+
+//   Camera::Instance()->update(time);
+// }
+
 void World::update(float time)
 {
+  static sf::Clock timer;
+
+  if (timer.GetElapsedTime() > 1.0) {
+      timer.Reset();
+	  for ( vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); i++ ) {
+	  	if ( !(*i)->echo() ) {
+		  if ( !Manager::Instance()->check( (*i)->getPosition() , (*i)->getSize() ) ) {
+		  	 Manager::Instance()->clearMatch();
+			 Manager::Instance()->updatePath( (*i)->getPosition() , (*i)->getSize() );
+		  	 for ( vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); i++ ) {
+				 if ( !(*i)->echo() ) continue;
+				 Manager::Instance()->collect( (*i)->getID() , (*i)->getPosition() );
+			 }
+			 Manager::Instance()->solve();
+		  } else {
+			 for ( vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); i++ ) {
+			 	 if ( !(*i)->echo() ) {
+					int t = -1;
+					Manager::Instance()->updatePos( t , (*i)->getPosition() );
+				 } else Manager::Instance()->updatePos( (*i)->getID() , (*i)->getPosition() );
+			 }
+			 Manager::Instance()->attack();
+		  }
+		  break;
+		}
+	  }
+  }
+
   for (vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
     {
       (*i)->update(time);
@@ -20,6 +58,7 @@ void World::update(float time)
 
   Camera::Instance()->update(time);
 }
+
 
 void World::dispatch(unsigned const int type)
 {

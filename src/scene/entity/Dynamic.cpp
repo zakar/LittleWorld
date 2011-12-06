@@ -13,3 +13,11 @@ void Dynamic::update(float time)
 void Dynamic::onNotify(unsigned const int type)
 {
 }
+
+int Dynamic::echo() 
+{
+}
+
+int Dynamic::getID()
+{
+}

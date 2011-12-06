@@ -14,6 +14,12 @@ class Enemy : public Dynamic
   Enemy(float x, float z, float s);
 
   virtual void update(float time);
+
+  virtual int echo();
+  virtual int getID();
+
+ private:
+   int zero_move , last_move_x , last_move_z , id;
 };
 
 #endif

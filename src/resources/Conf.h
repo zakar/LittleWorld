@@ -16,6 +16,11 @@
 #define DRAW_OUTLINE false
 #define USE_TEX true
 
+#define MAX_STEPS 150000
+
+#define MAX_PT 8
+#define MAX_EMY 20
+
 enum NOTIFICATION {
   ON_KEY_LEFT_DOWN,
   ON_KEY_RIGHT_DOWN,
