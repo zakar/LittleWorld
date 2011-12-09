@@ -5,13 +5,15 @@ Tex = {}
 
 function initWorld()
 
-   Tex['map'] = { id = { World.addTexture('./design/grass.jpg', 128, 128) }, 
-		  texCoord = { { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } } }
+   Tex['map'] = { id = World.addTexture('./design/grass.jpg', 128, 128), 
+		  texCoord = { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } }
+
 
    Tex['player'] = { id = { World.addTexture('./design/player1.png', 128, 128),
 			    World.addTexture('./design/player2.png', 128, 128) },
 		     texCoord = { { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 },
-				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } } }
+				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } },
+		     alpha_test = true }
 
    -- World.addEntity{ Entity = "Floor", 
    -- 		    x = 512, z = 512, s = 2048,

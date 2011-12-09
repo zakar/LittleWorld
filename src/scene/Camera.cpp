@@ -68,7 +68,7 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
 
   drawAllMeshes(meshes);
   drawAllSprites(sprites);
- 
+
   glDisable(GL_LIGHTING);
   for (int i = 0; i < id; ++i) 
     glDisable(GL_LIGHT0 + i);

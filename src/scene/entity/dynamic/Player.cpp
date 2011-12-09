@@ -42,7 +42,7 @@ void Player::update(float time)
   speed *= 0.8;
   Manager::Instance()->updateGrid(position, size, 3);
 
-  LuaInter::Instance()->getPlayTex(speed, &texid, tex);
+  LuaInter::Instance()->getPlayTex(speed, &texid, tex, &alpha_test);
 }
 
 int Player::echo() {  return 0;  }

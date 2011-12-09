@@ -43,6 +43,11 @@ void Sprite::draw()
 {
 #if USE_TEX
   getTexFromEntity();
+  if (entity->alpha_test) {
+    glAlphaFunc(GL_GREATER, 0.01);
+    glEnable(GL_ALPHA_TEST);
+  }
+    
   glEnable(GL_TEXTURE_2D);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glBindTexture(GL_TEXTURE_2D, entity->texid);
@@ -65,6 +70,7 @@ void Sprite::draw()
 
 #if USE_TEX
   glDisable(GL_TEXTURE_2D);
+  glDisable(GL_ALPHA_TEST);
 #endif
 }
 

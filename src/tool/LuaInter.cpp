@@ -150,16 +150,23 @@ void LuaInter::init(World* w)
   lua_settop(L, 0);
 }
 
-void LuaInter::getPlayTex(const Vector3 &speed, int *texid, float tex[][2])
+void LuaInter::getPlayTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test)
 {
   lua_getglobal(L, "playerTexFunc");
   lua_pushnumber(L, speed.x);
   lua_pushnumber(L, speed.z);
-  if (lua_pcall(L, 2, 2, 0))
+  if (lua_pcall(L, 2, 3, 0))
     lua_error(L);
 
   int bottom = lua_gettop(L);
-  *texid = lua_tointeger(L, -2);
+  if (lua_isnil(L, bottom)) 
+    *alpha_test = false;
+  else {
+    *alpha_test = lua_toboolean(L, bottom);
+    lua_pop(L, 1);
+  }
+  
+  bottom = lua_gettop(L);
   for (int i = 0; i < 4; ++i) {
     lua_pushinteger(L, 2*i + 1);
     lua_gettable(L, bottom);
@@ -171,19 +178,43 @@ void LuaInter::getPlayTex(const Vector3 &speed, int *texid, float tex[][2])
 
     lua_pop(L, 2);
   }
-  
-  lua_pop(L, 2);
+  lua_pop(L, 1);
+
+  *texid = lua_tointeger(L, -1);
+  lua_pop(L, 1);
 }
 
-void LuaInter::getEnemyTex(const Vector3 &speed, int *texid)
+void LuaInter::getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test)
 {
   lua_getglobal(L, "enemyTexFunc");
   lua_pushnumber(L, speed.x);
   lua_pushnumber(L, speed.z);
-  if (lua_pcall(L, 2, 1, 0))
+  if (lua_pcall(L, 2, 3, 0))
       lua_error(L);
+
+  int bottom = lua_gettop(L);
+  if (lua_isnil(L, bottom)) 
+    *alpha_test = false;
+  else {
+    *alpha_test = lua_toboolean(L, -1);
+    lua_pop(L, 1);
+  }
   
-  *texid = lua_tointeger(L, lua_gettop(L));
+  bottom = lua_gettop(L);
+  for (int i = 0; i < 4; ++i) {
+    lua_pushinteger(L, 2*i + 1);
+    lua_gettable(L, bottom);
+    tex[i][0] = lua_tonumber(L, -1);
+
+    lua_pushinteger(L, 2*i + 2);
+    lua_gettable(L, bottom);
+    tex[i][1] = lua_tonumber(L, -1);
+
+    lua_pop(L, 2);
+  }
+  lua_pop(L, 1);
+
+  *texid = lua_tointeger(L, -1);
   lua_pop(L, 1);
 }
 

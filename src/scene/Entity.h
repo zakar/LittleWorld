@@ -26,6 +26,7 @@ class Entity
   //data that object need
   int texid;
   float tex[4][2];
+  bool alpha_test;
 
  protected:
   float size;
