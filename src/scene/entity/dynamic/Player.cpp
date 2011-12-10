@@ -42,6 +42,9 @@ void Player::onNotify(unsigned const int type)
 void Player::update(float time)
 {
   Manager::Instance()->updateGrid(position, size, 0);
+  if ( Manager::Instance()->checkHit(position+speed*time,size) ) {
+	speed.x = speed.z = 0;
+  }
   position += speed*time;
   speed *= 0.8;
   Manager::Instance()->updateGrid(position, size, 3);

@@ -8,7 +8,6 @@ const int Manager::w[9][2] = { {0,0}, {-1, 0}, {1, 0}, {0, -1}, {0, 1}, {1,1}, {
 
 Manager::Manager() 
 {
-  memset(path, 0, (sizeof path));
   memset(grid, 0, (sizeof grid));
   update_tot = xlen = ylen = 0;
   memset( circle_pos , 0 , sizeof(circle_pos) );
@@ -26,7 +25,10 @@ void Manager::updateGrid(const Vector3 &position, float s, int type)
   int x0, y0, x1, y1;
   calRange(x0, y0, x1, y1, position, s);
   for (int i = x0; i < x1; ++i)
-    for (int j = y0; j < y1; ++j) grid[i][j] = type;
+    for (int j = y0; j < y1; ++j) {
+		if ( grid[i][j] == 2 ) continue;
+		grid[i][j] = type;
+	}
 }
 
 bool Manager::check( const Vector3 &position , const float &size )
@@ -75,32 +77,42 @@ void Manager::attack()
 {
 	int flag = 0;
 	for ( int i = 0; i < MAX_PT; i++ ) flag += reach[i];
-	printf( "%d\n" , flag );
+	//printf( "%d\n" , flag );
 	if ( flag >= 4 ) {
-		findPath(MAX_PT);
 		for ( int i = 0; i < MAX_EMY; i++ ) {
-			if ( list[i] != -1 ) list[i] = 8;
+			if ( list[i] != -1 ) list[i] = MAX_PT;
 		}
 	}
 }
-
+/*
 void Manager::findPath( const int &flag ) 
 {
 	static int que[GRID_WIDTH*GRID_HEIGHT];
 	static int vis[GRID_WIDTH][GRID_HEIGHT];
-	static int col = 0;
+	static int cov = 1;
 	int sx = circle_pos[flag][0] , sy = circle_pos[flag][1];
 	int hd = 0 , tl = 0;
-	col = 9-flag;
+	cov *= (-1);
+	int col = (9-flag) * cov;
 	que[tl++] = sx * GRID_HEIGHT + sy;
 	vis[sx][sy] = col;
 	dis[flag][sx][sy] = 0;
-	while ( hd < tl && tl < MAX_STEPS ) {
+	while ( hd < tl && ( tl < MAX_STEPS || ( flag == MAX_PT ) ) ) {
 		int x = que[hd]/GRID_HEIGHT , y = que[hd++]%GRID_HEIGHT;
-		for ( int l = 1; l < 9 && tl < MAX_STEPS; l++ ) {
+		for ( int l = 1; l < 9 && ( tl < MAX_STEPS || ( flag == MAX_PT ) ); l++ ) {
 			int xx = x + w[l][0] , yy = y + w[l][1];
-			if ( flag == 8 && ( abs(xx-sx) >= xlen && abs(yy-sy) >= ylen ) ) continue;
-			if ( 0 <= xx && xx < GRID_WIDTH && 0 <= yy && y < GRID_HEIGHT && grid[xx][yy] != 2 && vis[xx][yy] != col ) {
+//			if ( flag == 8 && ( abs(xx-sx) >= xlen && abs(yy-sy) >= ylen ) ) continue;
+			if ( 16 <= xx && xx < GRID_WIDTH-16 && 16 <= yy && y < GRID_HEIGHT-16 && vis[xx][yy] != col ) {
+				int tt = 0;
+				for ( int i = -1; i <= 1; i++ ) {
+					for ( int j = -1; j <= 1; j++ ) {
+						if ( grid[xx+i*16][yy+j*16] == 2 ) {
+							tt = 1;
+							break;
+						}
+					}
+				}
+				if ( tt ) continue;
 				if ( grid[xx][yy] == 3 && flag < MAX_PT ) continue;
 				vis[xx][yy] = col;
 				path[flag][xx][yy] = ((l-1)^1)+1;
@@ -110,11 +122,12 @@ void Manager::findPath( const int &flag )
 		}
 	}
 }
+*/
 
 bool Manager::updatePath( const Vector3 &position , const float &size )
 {
-/*
-  static int col = 0;
+
+/*  static int col = 0;
   static int vis[GRID_WIDTH][GRID_HEIGHT] = {0};
   static int que[GRID_WIDTH*GRID_HEIGHT];
   int sx, sy;
@@ -147,23 +160,30 @@ bool Manager::updatePath( const Vector3 &position , const float &size )
     	}
   	}	
   }
-  */
+  
   memset( dis , 0 , sizeof(dis) );
   memset( path , 0 , sizeof(path) );
-//  if ( !check(position,size) ) {
-  	makeCircle(position,size);
-  	for ( int i = 0; i < MAX_PT; i++ ) findPath(i);
-//	return true;
-//  }
+  */
+  if ( !check(position,size) ) {
+	makeCircle(position,size);
+//  	for ( int i = 0; i < MAX_PT; i++ ) findPath(i);
+	return true;
+  }
   return false;
 }
-
+/*
+void Manager::searchMap()
+{
+	findPath(MAX_PT);
+}
+*/
 void Manager::collect( const int &flag , const Vector3 &position ) 
 {
 	int sx , sy , j , k , f = 0;
 	calPosition(sx,sy,position);
 	for ( int i = 0; i < MAX_PT; i++ ) {
-		Match::Instance(MAX_PT,MAX_EMY)->addEdge(i,flag,dis[i][sx][sy]);
+	//	Match::Instance(MAX_PT,MAX_EMY)->addEdge(i,flag,dis[i][sx][sy]);
+		Match::Instance(MAX_PT,MAX_EMY)->addEdge(i,flag,(abs(sx-circle_pos[flag][0])+abs(sy-circle_pos[flag][1])));
 	}
 }
 
@@ -192,7 +212,9 @@ bool Manager::checkHit(const Vector3 &position, float s)
 
   for (int i = x0; i < x1; ++i)
     for (int j = y0; j < y1; ++j) 
-      if (grid[i][j]==2||grid[i][j]==1) return 1;
+      if (grid[i][j]==1||grid[i][j]==2 ) {
+		return 1;
+	}
 
   return 0;
 }
@@ -216,7 +238,7 @@ void Manager::updatePos( const int &flag , const Vector3 &position )
 	}
 }
 
-void Manager::fetchSpeed( const Vector3 &position , Vector3 &speed , const int &flag )
+bool Manager::fetchSpeed( const Vector3 &position , Vector3 &speed , const int &flag )
 {
 /*  int x , y , p1 = -1 , p2 = -1 , p3 = -1 , p4 = -1;
   calPosition(x, y, position);
@@ -232,16 +254,57 @@ void Manager::fetchSpeed( const Vector3 &position , Vector3 &speed , const int &
   int idx = path[p][x][y];
   speed.x = w[idx][0] * 100.0;
   speed.z = w[idx][1] * 100.0;*/
-  int x , y , d = list[flag];
-  calPosition(x,y,position);
+//  if ( list[flag] == -1 ) list[flag] = rand()%8;
+//  int x , y , d = list[flag];
+//  calPosition(x,y,position);
+  /*
   if ( d != -1 ) {
+//		int idx = path[d][x][y];
+//		speed.x = w[idx][0] * 100.0;
+//		speed.z = w[idx][1] * 100.0;
 		int idx = path[d][x][y];
+		for ( int i = -30; i < 30 && !idx; i++ ) {
+			for ( int j = -30; j < 30 && !idx; j++ ) {
+				if ( path[d][x+i][y+j] > 0 ) {
+					idx = path[d][x+i][x+j];
+				}
+			}
+		}
 		speed.x = w[idx][0] * 100.0;
 		speed.z = w[idx][1] * 100.0;
   } else {
-		speed.x = speed.z = 0;
+//		int idx = path[MAX_PT][x][y];
+//		printf( "%d\n" , idx );
+//		speed.x = w[idx][0] * 100.0;
+//		speed.z = w[idx][1] * 100.0;
+		int idx = path[MAX_PT][x][y];
+		for ( int i = -30; i < 30 && !idx; i++ ) {
+			for ( int j = -30; j < 30 && !idx; j++ ) {
+				if ( path[MAX_PT][x+i][y+j] > 0 ) {
+					idx = path[MAX_PT][x+i][x+j];
+				}
+			}
+		}
+		speed.x = w[idx][0] * 100.0;
+		speed.z = w[idx][1] * 100.0;
   }
   speed.y = 0.0;
+  */
+  int stx , sty , edx , edy , d = list[flag];
+  calPosition(stx,sty,position);
+  if ( d != -1 ) {
+		edx = circle_pos[d][0];
+		edy = circle_pos[d][1];
+  } else {
+		edx = circle_pos[MAX_PT][0];
+		edy = circle_pos[MAX_PT][1];
+  }
+  speed.x = speed.z = speed.y = 0;
+  if ( stx > edx ) speed.x = -100.0;
+  else if ( stx < edx ) speed.x = 100.0;
+  if ( sty > edy ) speed.z = -100.0;
+  else if ( sty < edy ) speed.z = 100.0;
+  return d != -1;
 }
 
 void Manager::calPosition(int &x, int &y, const Vector3 &position)

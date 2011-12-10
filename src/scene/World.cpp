@@ -24,8 +24,8 @@ void World::draw()
 void World::update(float time)
 {
   static sf::Clock timer;
-
-  if (timer.GetElapsedTime() > 1.0) {
+  static int flag = 0;
+  if (timer.GetElapsedTime() > 1) {
       timer.Reset();
 	  for ( vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); i++ ) {
 	  	if ( !(*i)->echo() ) {
@@ -50,11 +50,11 @@ void World::update(float time)
 		}
 	  }
   }
-
   for (vector<Dynamic*>::iterator i = dynamicList.begin(); i != dynamicList.end(); ++ i)
     {
       (*i)->update(time);
     }
+  
 
   Camera::Instance()->update(time);
 }

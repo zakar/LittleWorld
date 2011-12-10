@@ -12,7 +12,6 @@ class Enemy : public Dynamic
  public:
 
   Enemy(float x, float z, float s);
-  virtual ~Enemy();
 
   virtual void update(float time);
 
@@ -20,7 +19,8 @@ class Enemy : public Dynamic
   virtual int getID();
 
  private:
-   int zero_move , last_move_x , last_move_z , id;
+   int circle_move , id , zero_move , last_x , last_z;
+   float last_move_x , last_move_z;
 };
 
 #endif
