@@ -2,35 +2,21 @@ WORLD_WIDTH = 2048
 WORLD_HEIGHT = 2048
 
 Tex = {}
+Tex['map'] = { id = World.addTexture('./design/grass.jpg', 128, 128), 
+	       texCoord = { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } }
+
+Tex['player'] = { id = {} }
+for i = 1,4 do
+   for j = 1,4 do
+      Tex['player'].id[i..j] = World.addTexture('./design/ameng/' .. i .. j .. '.png', 128, 128)
+   end
+end
+Tex['player'].texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 }
+Tex['player'].alpha_test = true
+
+Tex['background'] = { id = { World.addTexture('./design/background1.jpg', 1024, 512) } }
 
 function initWorld()
-
-   Tex['map'] = { id = World.addTexture('./design/grass.jpg', 128, 128), 
-		  texCoord = { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } }
-
-   Tex['player'] = { id = {} }
-   for i = 1,4 do
-      for j = 1,4 do
-	 Tex['player'].id[i..j] = World.addTexture('./design/ameng/' .. i .. j .. '.png', 128, 128)
-      end
-   end
-   Tex['player'].texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 }
-   Tex['player'].alpha_test = true
-
-   -- Tex['player'] = { id = { World.addTexture('./design/player5.png', 128, 129),
-   -- 			    World.addTexture('./design/player2.png', 128, 128) },
-   -- 		     texCoord = { { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 },
-   -- 				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } },
-   -- 		     alpha_test = true }
-
-   -- World.addEntity{ Entity = "Floor", 
-   -- 		    x = 512, z = 512, s = 2048,
-   -- 		    Object = "Sprite",
-   -- 		    RGBA = { 1.0, 1.0, 1.0, 1.0 },
-   -- 		    totalVertex = 4,
-   -- 		    vertex = { 1024,0,1024, 1024,0,-1024, -1024,0,-1024, -1024,0,1024},
-   -- 		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
-
 
    for i = 0, WORLD_WIDTH / 128 do
       for j = 0, WORLD_HEIGHT / 128 do 

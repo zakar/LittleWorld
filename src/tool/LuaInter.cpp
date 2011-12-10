@@ -245,3 +245,13 @@ void LuaInter::getFloorTex(int *texid, float tex[][2])
   
   lua_pop(L, 2);
 }
+
+void LuaInter::getBackGroundTex(int state, int *backgroundTexId)
+{
+  lua_getglobal(L, "backgroundTexFunc");
+  lua_pushinteger(L, state);
+  if (lua_pcall(L, 1, 1, 0))
+    lua_error(L);
+  *backgroundTexId = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+}

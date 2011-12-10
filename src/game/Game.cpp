@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Menu.h"
 
 using namespace std;
 using namespace sf;
@@ -19,54 +20,69 @@ Game* Game::Instance()
 void Game::init()
 {
   LuaInter::Instance()->init(&world);
-  setGameState(2);
+  Menu::Instance()->setState(1);
+  setGameState(1);
 }
 
 void Game::draw()
 {
-  world.draw();
+  if (gameState == 2)
+    world.draw();
+  else
+    Menu::Instance()->draw();
 }
 
 void Game::update(float time)
 {
-  world.update(time);
+  if (gameState == 2)
+    world.update(time);
 }
 
 void Game::onEvent(Event *event)
 {
   if (event->Type == Event::KeyPressed) {
-    if (event->Key.Code == Key::Left) {
-      world.dispatch(ON_KEY_LEFT_DOWN);
-    } else
-
-    if (event->Key.Code == Key::Right) {
-      world.dispatch(ON_KEY_RIGHT_DOWN);
-    } else
-
-    if (event->Key.Code == Key::Down) {
-      world.dispatch(ON_KEY_DOWN_DOWN);
-    } else
-
-    if (event->Key.Code == Key::Up) {
-      world.dispatch(ON_KEY_UP_DOWN);
-    } else
-
-    if (event->Key.Code == Key::I) {
-      Camera::Instance()->rotateCamera(1.0, 0.0);
-    } else
-
-    if (event->Key.Code == Key::K) {
-      Camera::Instance()->rotateCamera(-1.0, 0.0);
-    } else
-
-    if (event->Key.Code == Key::J) {
-      Camera::Instance()->rotateCamera(0.0, 1.0);
-    } else
-
-    if (event->Key.Code == Key::L) {
-      Camera::Instance()->rotateCamera(0.0, -1.0);
+    if (gameState == 2) {
+      switch (event->Key.Code) {
+      case Key::Left:
+	world.dispatch(ON_KEY_LEFT_DOWN);
+	break;
+      case Key::Right:
+	world.dispatch(ON_KEY_RIGHT_DOWN);
+	break;
+      case Key::Down:
+	world.dispatch(ON_KEY_DOWN_DOWN);
+	break;
+      case Key::Up:
+	world.dispatch(ON_KEY_UP_DOWN);
+	break;
+      case Key::I: 
+	Camera::Instance()->rotateCamera(1.0, 0.0);
+	break;
+      case Key::K:
+	Camera::Instance()->rotateCamera(-1.0, 0.0);
+	break;
+      case Key::J:
+	Camera::Instance()->rotateCamera(0.0, 1.0);
+	break;
+      case Key::L:
+	Camera::Instance()->rotateCamera(0.0, -1.0);
+	break;
+      }
+    } else {
+      switch (event->Key.Code) {
+      case Key::Up:
+	Menu::Instance()->dispatch(ON_KEY_UP_DOWN);
+	break;
+      case Key::Down:
+	Menu::Instance()->dispatch(ON_KEY_DOWN_DOWN);
+	break;
+      case Key::Return:
+	Menu::Instance()->dispatch(ON_KEY_RETURN_DOWN);
+	break;
+      }
     }
   }
+
 
   // RESIZE
   if (event->Type == Event::Resized)
@@ -101,4 +117,6 @@ void Game::setGameState(int state)
   }
   
   gameState = state;
+  if (gameState != 2)
+    Menu::Instance()->setState(gameState);
 }
