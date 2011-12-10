@@ -6,6 +6,10 @@ Sprite::Sprite(Entity *e) : Object(e)
 {
 }
 
+Sprite::~Sprite()
+{
+}
+
 void Sprite::getTexFromEntity(void)
 {
   for (int i = 0; i < 4; ++i) {

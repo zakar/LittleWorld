@@ -13,6 +13,10 @@ Enemy::Enemy(float x, float z, float s) : Dynamic(s)
   tot++;
 }
 
+Enemy::~Enemy()
+{
+}
+
 int Enemy::echo() {  return 1;  }
 
 int Enemy::getID() {  return id;  }

@@ -8,12 +8,20 @@ function initWorld()
    Tex['map'] = { id = World.addTexture('./design/grass.jpg', 128, 128), 
 		  texCoord = { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } }
 
+   Tex['player'] = { id = {} }
+   for i = 1,4 do
+      for j = 1,4 do
+	 Tex['player'].id[i..j] = World.addTexture('./design/ameng/' .. i .. j .. '.png', 128, 128)
+      end
+   end
+   Tex['player'].texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 }
+   Tex['player'].alpha_test = true
 
-   Tex['player'] = { id = { World.addTexture('./design/player1.png', 128, 128),
-			    World.addTexture('./design/player2.png', 128, 128) },
-		     texCoord = { { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 },
-				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } },
-		     alpha_test = true }
+   -- Tex['player'] = { id = { World.addTexture('./design/player5.png', 128, 129),
+   -- 			    World.addTexture('./design/player2.png', 128, 128) },
+   -- 		     texCoord = { { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 },
+   -- 				  { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 } },
+   -- 		     alpha_test = true }
 
    -- World.addEntity{ Entity = "Floor", 
    -- 		    x = 512, z = 512, s = 2048,
@@ -46,14 +54,13 @@ function initWorld()
 		    vertex = { 128,0,0,  128,256,0,  -128,256,0,  -128,0,0 },
 		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
 
-
    for i = 1,20 do
       World.addEntity{ Entity = "Enemy", 
-		       x = math.random(10, 1000), z = math.random(10, 1000), s = 32,
-		       Object = "Mesh",
-		       RGBA = { 1.0, 0.0, 0.0, 1.0 },
-		       size = 32,
-		       height = 32 }
+   		       x = math.random(10, 1000), z = math.random(10, 1000), s = 32,
+   		       Object = "Mesh",
+   		       RGBA = { 1.0, 0.0, 0.0, 1.0 },
+   		       size = 32,
+   		       height = 32 }
    end
 
    local WallPos = { { x = 1.0, z = 4.0 },

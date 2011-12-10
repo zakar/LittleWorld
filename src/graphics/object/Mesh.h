@@ -3,7 +3,6 @@
 
 #include "Light.h"
 #include "../Object.h"
-#include "../VBO.h"
 #include "../../resources/Structs.h"
 #include "../../resources/Conf.h"
 
@@ -15,6 +14,7 @@ class Mesh : public Object
  public:
 
   Mesh(Entity *e);
+  virtual ~Mesh();
 
   virtual void draw();
   virtual void outline();
@@ -35,8 +35,6 @@ class Mesh : public Object
   Vertex vertices[24];
   Triangle triangles[12];
   GLubyte indexes[36];
-
-  VBO *vertexBufferObject;
 };
 
 #endif

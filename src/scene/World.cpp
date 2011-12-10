@@ -133,4 +133,22 @@ void World::addLight(float x, float y, float z, float r, float g, float b)
   lightList.push_back(new Light(staticList.back(), r, g, b));
 }
 
+void World::clearAll()
+{
+  for (std::vector<Dynamic*>::iterator it = dynamicList.begin(); it != dynamicList.end(); ++it)
+    delete *it;
+  for (std::vector<Static*>::iterator it = staticList.begin(); it != staticList.end(); ++it)
+    delete *it;
+  for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+    delete *it;
+  for (std::vector<Sprite*>::iterator it = spriteList.begin(); it != spriteList.end(); ++it)
+    delete *it;
+  for (std::vector<Light*>::iterator it = lightList.begin(); it != lightList.end(); ++it)
+    delete *it;
 
+  dynamicList.clear();
+  staticList.clear();
+  meshList.clear();
+  spriteList.clear();
+  lightList.clear();
+}

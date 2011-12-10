@@ -10,9 +10,16 @@ Game::Game()
   windowPaddingTop  = 0.f;
 }
 
+Game* Game::Instance()
+{
+  static Game* ins = new Game();
+  return ins;
+}
+
 void Game::init()
 {
   LuaInter::Instance()->init(&world);
+  setGameState(2);
 }
 
 void Game::draw()
@@ -85,3 +92,13 @@ void Game::setMousePosition(unsigned int x, unsigned int y)
   world.updateMousePosition((x + windowPaddingLeft) * windowScale - SCREEN_WIDTH / 2.f, (y + windowPaddingTop) * windowScale - SCREEN_HEIGHT / 2.f);
 }
 
+void Game::setGameState(int state)
+{
+  if (state == 2) {
+    LuaInter::Instance()->initWorld();
+  } else if (state == 3) {
+    world.clearAll();
+  }
+  
+  gameState = state;
+}

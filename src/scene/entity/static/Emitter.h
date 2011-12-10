@@ -10,6 +10,7 @@ class Emitter : public Static
  public:
 
   Emitter(float x, float y, float z);
+  ~Emitter();
 };
 
 #endif

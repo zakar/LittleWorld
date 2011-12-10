@@ -10,6 +10,10 @@ Player::Player(float x, float z, float s) : Dynamic(s)
   Manager::Instance()->updateGrid(position, s, 3 );
 }
 
+Player::~Player()
+{
+}
+
 void Player::onNotify(unsigned const int type)
 {
   switch (type) {

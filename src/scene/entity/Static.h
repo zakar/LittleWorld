@@ -8,6 +8,7 @@ class Static : public Entity
 {
  public:
   Static(float s, bool b);
+  virtual ~Static();
   virtual void update(float time);
 
  private:

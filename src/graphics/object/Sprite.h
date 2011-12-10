@@ -2,7 +2,6 @@
 #define DEF_SPRITE
 
 #include "../Object.h"
-#include "../VBO.h"
 #include "../../resources/Structs.h"
 #include "../../resources/Conf.h"
 
@@ -16,6 +15,7 @@ class Sprite : public Object
  public:
 
   Sprite(Entity *e);
+  virtual ~Sprite();
 
   virtual void draw();
   virtual void outline();
@@ -30,8 +30,6 @@ class Sprite : public Object
 
   Vertex vertices[4];
   GLubyte indexes[4];
-
-  VBO *vertexBufferObject;
 };
 
 #endif

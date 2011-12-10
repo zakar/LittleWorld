@@ -9,3 +9,6 @@ Emitter::Emitter(float x, float y, float z) : Static(0.f, false)
   position.z = z;
 }
 
+Emitter::~Emitter()
+{
+}

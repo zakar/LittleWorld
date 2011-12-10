@@ -8,6 +8,10 @@ Object::Object(Entity *e)
     visible = false;
 }
 
+Object::~Object()
+{
+}
+
 void Object::draw()
 {
 }

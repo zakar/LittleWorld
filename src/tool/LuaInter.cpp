@@ -144,6 +144,10 @@ void LuaInter::init(World* w)
   if (luaL_dofile(L, "./src/tool/callback.lua"))
     lua_error(L);
 
+}
+
+void LuaInter::initWorld()
+{
   lua_getglobal(L, "initWorld");
   if (lua_pcall(L, 0, 0, 0)) 
     lua_error(L);

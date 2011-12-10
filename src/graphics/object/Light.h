@@ -12,6 +12,7 @@ class Light : public Object
  public:
 
   Light(Entity *e, float r, float g, float b);
+  virtual ~Light();
 
   virtual void draw();
   virtual void outline();

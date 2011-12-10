@@ -6,6 +6,10 @@ Mesh::Mesh(Entity *e) : Object(e)
 {
 }
 
+Mesh::~Mesh()
+{
+}
+
 void Mesh::setData(float size, float height, float *RGBA)
 {
   totalVertex = 24;

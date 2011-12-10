@@ -13,6 +13,10 @@ Light::Light(Entity *e, float r, float g, float b) : Object(e)
   qa = 0.00005f;
 }
 
+Light::~Light()
+{
+}
+
 void Light::draw()
 {
   glColor4f(red, green, blue, 1.f);

@@ -9,6 +9,7 @@ class Decor : public Static
 {
  public:
   Decor(float x, float z, float s, bool w);
+  virtual ~Decor();
 };
 
 #endif

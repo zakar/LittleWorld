@@ -15,6 +15,7 @@ class Dynamic : public Entity
  public:
 
   Dynamic(float s);
+  virtual ~Dynamic();
 
   virtual void update(float time);
   virtual void onNotify(unsigned const int type);

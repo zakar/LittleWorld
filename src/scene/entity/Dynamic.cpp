@@ -6,6 +6,10 @@ Dynamic::Dynamic(float s) : Entity(s)
 {
 }
 
+Dynamic::~Dynamic()
+{
+}
+
 void Dynamic::update(float time)
 {
 }

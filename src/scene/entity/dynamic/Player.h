@@ -12,6 +12,7 @@ class Player : public Dynamic
  public:
 
   Player(float x, float z, float s);
+  virtual ~Player();
   virtual void update(float time);
   virtual void onNotify(unsigned const int type);
   virtual int echo();

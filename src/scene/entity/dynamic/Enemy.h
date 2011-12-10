@@ -12,6 +12,7 @@ class Enemy : public Dynamic
  public:
 
   Enemy(float x, float z, float s);
+  virtual ~Enemy();
 
   virtual void update(float time);
 

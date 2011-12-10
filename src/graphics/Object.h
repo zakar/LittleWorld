@@ -12,6 +12,7 @@ class Object
  public:
 
   Object(Entity *e);
+  virtual ~Object();
 
   virtual void draw();
   virtual void outline();

@@ -11,6 +11,7 @@ class Entity
  public:
 
   Entity(float s);
+  virtual ~Entity();
 
   float getX();
   float getY();

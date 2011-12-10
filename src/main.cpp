@@ -100,14 +100,13 @@ int main()
     Clock clock;
 
     // Create the game object
-    Game game;
-    game.init();
+    Game::Instance()->init();
 
     // Start game loop
     while (application.IsOpened())
     {
         // Give the game mouse screen related's position
-        game.setMousePosition(input.GetMouseX(), input.GetMouseY());
+      Game::Instance()->setMousePosition(input.GetMouseX(), input.GetMouseY());
 
         // Process events
         Event event;
@@ -126,12 +125,12 @@ int main()
                     break;
 
                 case Event::Resized:
-                    game.onEvent(&event);
+   		    Game::Instance()->onEvent(&event);
                     onWindowResized(event.Size.Width, event.Size.Height);
                     break;
 
                 case Event::KeyPressed:
-		  game.onEvent(&event);
+		  Game::Instance()->onEvent(&event);
 
                 case Event::MouseButtonPressed:
                 case Event::LostFocus:
@@ -154,7 +153,7 @@ int main()
 	if (gameClock.GetElapsedTime() > 1.0/FPS) {
 
 	  //Update
-	  game.update(gameClock.GetElapsedTime());
+	  Game::Instance()->update(gameClock.GetElapsedTime());
 	  gameClock.Reset();
 
 	  // Framerate
@@ -166,7 +165,7 @@ int main()
 	  }
 
 	  //Draw...
-	  game.draw();
+	  Game::Instance()->draw();
 
 	  // Finally, display the rendered frame on screen
 	  application.Display();

@@ -8,6 +8,10 @@ Entity::Entity(float s) : size(s)
   lightned = false;
 }
 
+Entity::~Entity()
+{
+}
+
 void Entity::setLightned(bool v)   { lightned = v; }
 
 float Entity::getX()               { return position.x; }

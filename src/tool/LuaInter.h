@@ -16,6 +16,7 @@ class LuaInter
   static LuaInter *Instance();
 
   void init(World* w);
+  void initWorld();
   void addEntity(void);
 
   void getPlayTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test);
