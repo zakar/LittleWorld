@@ -1,9 +1,16 @@
 #include "Menu.h"
 #include "Game.h"
+#include "Application.h"
 #include "../tool/LuaInter.h"
 #include "../resources/Conf.h"
 #include <SFML/Graphics.hpp>
-using namespace sf;
+
+static const char *backgroundTex[2] = { "./design/background1.jpg", "./design/background2.jpg" };
+static const char *buttonTex[2][2] = {
+  { "./design/t_start.png", "./design/t_exit.png" },
+  { "./design/cfg_back.png", "./design/t_exit.png" },
+};
+
 
 Menu::Menu()
 {
@@ -18,45 +25,52 @@ Menu* Menu::Instance()
 void Menu::setState(int state)
 {
   this->state = state;
+  background.LoadFromFile(backgroundTex[state]);
+  button[0].LoadFromFile(buttonTex[state][0]);
+  button[1].LoadFromFile(buttonTex[state][1]);
+  currentButton = 0;
 }
 
 void Menu::dispatch(unsigned const int type)
 {
-  if (type == ON_KEY_RETURN_DOWN) {
-    if (state == 1) 
-      Game::Instance()->setGameState(2);
-    else
-      Game::Instance()->setGameState(1);
+  switch (type) {
+  case ON_KEY_RETURN_DOWN: 
+    if (state == 0) {
+      if (currentButton == 0)
+	Game::Instance()->setGameState(2);
+      else
+	Application::Instance()->Close();
+    } else {
+      if (currentButton == 0)
+	Game::Instance()->setGameState(0);
+      else
+	Application::Instance()->Close();
+    }
+    break;
+    
+  case ON_KEY_UP_DOWN:
+  case ON_KEY_DOWN_DOWN:
+    currentButton ^= 1;
+    break;
   }
 }
 
 void Menu::draw()
 {
-  LuaInter::Instance()->getBackGroundTex(state, &backgroundTexId);
-
   glColorMask(GL_ONE, GL_ONE, GL_ONE, GL_ONE);
-  glClear(GL_COLOR_BUFFER_BIT);
 
-  glEnable(GL_TEXTURE_2D);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-  glBindTexture(GL_TEXTURE_2D, backgroundTexId);
+  sf::Sprite backgroundS(background);
+  sf::Sprite buttonS0(button[0]);
+  sf::Sprite buttonS1(button[1]);
 
-  glBegin(GL_QUADS);
-  glTexCoord2f(1.0, 1.0);
-  glVertex2f(SCREEN_WIDTH / -2.0, SCREEN_HEIGHT / -2.0);
+  buttonS0.SetPosition(100 + 100 * (currentButton == 0), 100);
+  buttonS1.SetPosition(100 + 100 * (currentButton == 1), 200);
 
-  glTexCoord2f(0.0, 1.0);
-  glVertex2f(SCREEN_WIDTH / -2.0, SCREEN_HEIGHT / 2.0);
+  Application::Instance()->Draw(backgroundS);
+  Application::Instance()->Draw(buttonS0);
+  Application::Instance()->Draw(buttonS1);
 
-  glTexCoord2f(0.0, 0.0);
-  glVertex2f(SCREEN_WIDTH / 2.0, SCREEN_HEIGHT / 2.0);
-
-  glTexCoord2f(1.0, 0.0);
-  glVertex2f(SCREEN_WIDTH / 2.0, SCREEN_HEIGHT / -2.0);
-
-  glEnd();
-
-  glDisable(GL_TEXTURE_2D);
   glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
 }
+
 

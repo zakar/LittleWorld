@@ -42,6 +42,7 @@ class Vector3
         Bool      operator!=(const Vector3& vector) const;
 
         static const Vector3 zero;
+	static const Vector3 one;
         static const Scalar   Epsilon;
 };
 

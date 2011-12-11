@@ -74,7 +74,6 @@ void Camera::draw(std::vector<Mesh*> *meshes, std::vector<Sprite*> *sprites, std
     glDisable(GL_LIGHT0 + i);
   glDisable(GL_COLOR_MATERIAL);
 
-
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 

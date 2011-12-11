@@ -5,6 +5,7 @@
 ************************************/
 
 #include "game/Game.h"
+#include "game/Application.h"
 #include "resources/Conf.h"
 
 #include <SFML/Graphics.hpp>
@@ -64,36 +65,13 @@ void onWindowResized(float width, float height)
 
 int main()
 {
-    // Create main window
-    WindowSettings Settings;
-    Settings.AntialiasingLevel = 4;
-    Settings.StencilBits = 8;
-    RenderWindow application(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Game", (Style::Close | Style::Resize), Settings);
-    application.PreserveOpenGLStates(true);
-    application.UseVerticalSync(false);
-    application.SetFramerateLimit(0);
-
-    // Setup rendering
-    glShadeModel(GL_SMOOTH);
-    glCullFace(GL_FRONT);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-    // Default values
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_STENCIL_TEST);
-    glDepthMask(GL_FALSE);
-    glColorMask(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
-
-    // Clear values
-    glClearDepth(GL_ONE);
-    glClearColor(GL_ZERO, GL_ZERO, GL_ZERO, GL_ZERO);
+    Application::Instance()->Init();
 
     // Setup window
     setupWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Gather a pointer to the input system
-    const Input& input = application.GetInput();
+    const Input& input = Application::Instance()->GetInput();
 
     // Create a clocks for measuring the time elapsed
     Clock gameClock;
@@ -103,25 +81,25 @@ int main()
     Game::Instance()->init();
 
     // Start game loop
-    while (application.IsOpened())
+    while (Application::Instance()->IsOpened())
     {
         // Give the game mouse screen related's position
       Game::Instance()->setMousePosition(input.GetMouseX(), input.GetMouseY());
 
         // Process events
         Event event;
-        while (application.GetEvent(event))
+        while (Application::Instance()->GetEvent(event))
         {
             // Close window : exit
             if (event.Type == Event::KeyPressed && event.Key.Code == Key::Escape)
             {
-                application.Close();
+                Application::Instance()->Close();
             }
 
             switch (event.Type)
             {
                 case Event::Closed:
-                    application.Close();
+		  Application::Instance()->Close();
                     break;
 
                 case Event::Resized:
@@ -130,23 +108,23 @@ int main()
                     break;
 
                 case Event::KeyPressed:
-		  Game::Instance()->onEvent(&event);
+		    Game::Instance()->onEvent(&event);
 
-                case Event::MouseButtonPressed:
-                case Event::LostFocus:
-                case Event::GainedFocus:
-                case Event::TextEntered:
-                case Event::KeyReleased:
-                case Event::MouseWheelMoved:
-                case Event::MouseButtonReleased:
-                case Event::MouseMoved:
-                case Event::MouseEntered:
-                case Event::MouseLeft:
-                case Event::JoyButtonPressed:
-                case Event::JoyButtonReleased:
-                case Event::JoyMoved:
-                case Event::Count:
-                    break;
+                // case Event::MouseButtonPressed:
+                // case Event::LostFocus:
+                // case Event::GainedFocus:
+                // case Event::TextEntered:
+                // case Event::KeyReleased:
+                // case Event::MouseWheelMoved:
+                // case Event::MouseButtonReleased:
+                // case Event::MouseMoved:
+                // case Event::MouseEntered:
+                // case Event::MouseLeft:
+                // case Event::JoyButtonPressed:
+                // case Event::JoyButtonReleased:
+                // case Event::JoyMoved:
+                // case Event::Count:
+                //     break;
             }
         }
 
@@ -168,7 +146,7 @@ int main()
 	  Game::Instance()->draw();
 
 	  // Finally, display the rendered frame on screen
-	  application.Display();
+	  Application::Instance()->Display();
 	}
 	usleep((unsigned int)(100000 * 1.0/FPS));
     }

@@ -16,6 +16,9 @@ class Player : public Dynamic
   virtual void update(float time);
   virtual void onNotify(unsigned const int type);
   virtual int echo();
+
+ private:
+  sf::Clock playerStop;
 };
 
 #endif

@@ -20,22 +20,25 @@ Game* Game::Instance()
 void Game::init()
 {
   LuaInter::Instance()->init(&world);
-  Menu::Instance()->setState(1);
-  setGameState(1);
+  setGameState(0);
 }
 
 void Game::draw()
 {
   if (gameState == 2)
     world.draw();
-  else
+  else {
     Menu::Instance()->draw();
+  }
 }
 
 void Game::update(float time)
 {
-  if (gameState == 2)
+  if (gameState == 2) {
     world.update(time);
+    if (gameState != 2) //update完且发现切换到Menu，这时才清除掉world中的entity
+      world.clearAll();
+  }
 }
 
 void Game::onEvent(Event *event)
@@ -85,22 +88,18 @@ void Game::onEvent(Event *event)
 
 
   // RESIZE
-  if (event->Type == Event::Resized)
-    {
-      world.dispatch(Notifications::ON_WINDOW_RESIZED);
-
-      if ((float)event->Size.Width / (float)event->Size.Height > SCREEN_WIDTH / SCREEN_HEIGHT)
-        {
-	  windowScale = SCREEN_HEIGHT / event->Size.Height;
-        }
-      else
-        {
-	  windowScale = SCREEN_WIDTH / event->Size.Width;
-        }
+  if (event->Type == Event::Resized) {
+      world.dispatch(ON_WINDOW_RESIZED);
+      if ((float)event->Size.Width / (float)event->Size.Height > SCREEN_WIDTH / SCREEN_HEIGHT) {
+	windowScale = SCREEN_HEIGHT / event->Size.Height;
+      }
+      else {
+	windowScale = SCREEN_WIDTH / event->Size.Width;
+      }
       windowPaddingLeft = ((float)event->Size.Width - (SCREEN_WIDTH / windowScale)) / -2.f;
       windowPaddingTop  = ((float)event->Size.Height - (SCREEN_HEIGHT / windowScale)) / -2.f;
       cout << windowScale << endl;
-    }
+  }
 }
 
 void Game::setMousePosition(unsigned int x, unsigned int y)
@@ -110,13 +109,14 @@ void Game::setMousePosition(unsigned int x, unsigned int y)
 
 void Game::setGameState(int state)
 {
-  if (state == 2) {
+  //从Menu切换到World可以直接初始化状态
+  //从World到Menu的切换是在update过程中切换的，因此要等update完才可以初始化状态
+  if (state == 2) { 
     LuaInter::Instance()->initWorld();
-  } else if (state == 3) {
-    world.clearAll();
   }
   
   gameState = state;
-  if (gameState != 2)
+  if (gameState < 2) {
     Menu::Instance()->setState(gameState);
+  }
 }

@@ -1,4 +1,6 @@
 #include "Player.h"
+#include <cmath>
+#include "../../../game/Game.h"
 
 using namespace std;
 
@@ -8,6 +10,7 @@ Player::Player(float x, float z, float s) : Dynamic(s)
   position.y = 0.f;
   position.z = z;
   Manager::Instance()->updateGrid(position, s, 3 );
+  playerStop.Reset();
 }
 
 Player::~Player()
@@ -48,6 +51,14 @@ void Player::update(float time)
   position += speed*time;
   speed *= 0.8;
   Manager::Instance()->updateGrid(position, size, 3);
+
+  if (fabs(speed.x) > 1.0 || fabs(speed.z) > 1.0)
+    playerStop.Reset();
+
+  if (playerStop.GetElapsedTime() > 3.0) {
+    Game::Instance()->setGameState(1);
+    return;
+  }
 
   LuaInter::Instance()->getPlayTex(speed, &texid, tex, &alpha_test);
 }

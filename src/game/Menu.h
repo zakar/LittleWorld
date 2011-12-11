@@ -1,6 +1,8 @@
 #ifndef __DEF_MENU__
 #define __DEF_MENU__
 
+#include <SFML/Graphics.hpp>
+
 class Menu
 {
  public:
@@ -11,10 +13,11 @@ class Menu
   
  private:
   Menu();
-  int state; //1, 3
+  int state; //0, 1
+  int currentButton; //0, 1
 
-  int backgroundTexId;
-  int buttonTexId[2];
+  sf::Image background;
+  sf::Image button[2];
 };
 
 #endif
