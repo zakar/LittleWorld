@@ -15,7 +15,7 @@ class Manager
   
   void updateGrid(const Vector3 &position, float s, int type);
   bool updatePath(const Vector3 &position, const float &size);
-  bool checkHit(const Vector3 &position, float s);
+  int checkHit(const Vector3 &position, float s);
   bool fetchSpeed(const Vector3 &position, Vector3 &speed, const int &flag);
 
   bool check( const Vector3 &position , const float &size ); 
@@ -26,6 +26,8 @@ class Manager
   void solve();
   void clearMatch();
   void searchMap();
+
+  void clear();
 
  private:
   const static int w[9][2];

@@ -2,8 +2,12 @@ WORLD_WIDTH = 2048
 WORLD_HEIGHT = 2048
 
 Tex = {}
+
 Tex['map'] = { id = World.addTexture('./design/grass.jpg', 128, 128), 
 	       texCoord = { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } }
+
+Tex['goal'] = { id = World.addTexture('./design/Kud01.png', 128, 128),
+		texCoord = { 1.0, 0.0,  1.0, 1.0,  0.0, 1.0,  0.0, 0.0 } }
 
 Tex['player'] = { id = {} }
 for i = 1,4 do
@@ -15,6 +19,7 @@ Tex['player'].texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 }
 Tex['player'].alpha_test = true
 
 Tex['background'] = { id = { World.addTexture('./design/background1.jpg', 1024, 512) } }
+
 
 function initWorld()
 
@@ -40,7 +45,15 @@ function initWorld()
 		    vertex = { 128,0,0,  128,256,0,  -128,256,0,  -128,0,0 },
 		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
 
-   for i = 1,20 do
+   World.addEntity{ Entity = "Goal",
+		    x = 1800, z = 1800, s = 128,
+		    Object = "Sprite", 
+		    RGBA = { 1.0, 1.0, 1.0, 1.0 },
+		    totalVertex = 4,
+		    vertex = { 128,0,0,  128,256,0,  -128,256,0,  -128,0,0 },
+		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
+
+   for i = 1,5 do
       World.addEntity{ Entity = "Enemy", 
    		       x = math.random(10, 1000), z = math.random(10, 1000), s = 32,
    		       Object = "Mesh",

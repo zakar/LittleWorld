@@ -18,6 +18,7 @@ class Menu
 
   sf::Image background;
   sf::Image button[2];
+  sf::IntRect rect[2];
 };
 
 #endif

@@ -11,6 +11,7 @@
 #include "entity/Static.h"
 #include "entity/static/Emitter.h"
 #include "entity/static/Decor.h"
+#include "entity/static/Goal.h"
 
 #include "Camera.h"
 #include "../ai/Manager.h"
@@ -33,6 +34,7 @@ class World
 	Entity* addEnemy(float x, float z, float size);
 	Entity* addWallDecor(float x, float z, float size);
 	Entity* addFloorDecor(float x, float z, float size);
+	Entity* addGoal(float x, float z, float size);
 
 	void addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *normal);
 	void addMesh(Entity *e, float size, float height, float *RGBA);

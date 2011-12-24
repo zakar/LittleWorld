@@ -112,6 +112,12 @@ Entity* World::addFloorDecor(float x, float z, float size)
   return staticList.back();
 }
 
+Entity* World::addGoal(float x, float z, float size)
+{
+  staticList.push_back(new Goal(x, z, size, false));
+  return staticList.back();
+}
+
 void World::addSprite(Entity *e, float *RGBA, int totalVertex, float *vertex, float *normal)
 {
   Sprite *sprite = new Sprite(e);

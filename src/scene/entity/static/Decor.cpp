@@ -9,7 +9,7 @@ Decor::Decor(float x, float z, float s, bool w) : Static(s, w)
   LuaInter::Instance()->getFloorTex(&texid, tex);
 
   if (!w)
-    Manager::Instance()->updateGrid(position, s, 1);
+    Manager::Instance()->updateGrid(position, s, 2);
 }
 
 Decor::~Decor()

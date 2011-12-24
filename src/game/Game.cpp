@@ -20,12 +20,12 @@ Game* Game::Instance()
 void Game::init()
 {
   LuaInter::Instance()->init(&world);
-  setGameState(0);
+  setGameState(OPENING);
 }
 
 void Game::draw()
 {
-  if (gameState == 2)
+  if (gameState == PLAYING)
     world.draw();
   else {
     Menu::Instance()->draw();
@@ -34,17 +34,20 @@ void Game::draw()
 
 void Game::update(float time)
 {
-  if (gameState == 2) {
+  if (gameState == PLAYING) {
     world.update(time);
-    if (gameState != 2) //update完且发现切换到Menu，这时才清除掉world中的entity
+    if (gameState != PLAYING) { //update完且发现切换到Menu，这时才清除掉world中的entity
       world.clearAll();
+      Manager::Instance()->clear();
+      Enemy::clear();
+    }
   }
 }
 
 void Game::onEvent(Event *event)
 {
   if (event->Type == Event::KeyPressed) {
-    if (gameState == 2) {
+    if (gameState == PLAYING) {
       switch (event->Key.Code) {
       case Key::Left:
 	world.dispatch(ON_KEY_LEFT_DOWN);
@@ -111,12 +114,12 @@ void Game::setGameState(int state)
 {
   //从Menu切换到World可以直接初始化状态
   //从World到Menu的切换是在update过程中切换的，因此要等update完才可以初始化状态
-  if (state == 2) { 
+  if (state == PLAYING) { 
     LuaInter::Instance()->initWorld();
   }
   
   gameState = state;
-  if (gameState < 2) {
+  if (gameState != PLAYING) {
     Menu::Instance()->setState(gameState);
   }
 }

@@ -88,8 +88,11 @@ static int addEntity(lua_State *L)
     e = world->addEnemy(x, z, s);
   else if (strcmp(entity, "Floor") == 0)
     e = world->addFloorDecor(x, z, s);
-  else 
+  else if (strcmp(entity, "Goal") == 0) 
+    e = world->addGoal(x, z, s);
+  else
     e = world->addWallDecor(x, z, s);
+  
 
   if (strcmp(object, "Sprite") == 0)
     addSprite(L, e);
@@ -225,6 +228,30 @@ void LuaInter::getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], boo
 void LuaInter::getFloorTex(int *texid, float tex[][2])
 {
   lua_getglobal(L, "floorTexFunc");
+  if (lua_pcall(L, 0, 2, 0))
+    lua_error(L);
+
+  int bottom = lua_gettop(L);
+  
+  *texid = lua_tointeger(L, -2);
+  for (int i = 0; i < 4; ++i) {
+    lua_pushinteger(L, 2*i + 1);
+    lua_gettable(L, bottom);
+    tex[i][0] = lua_tonumber(L, -1);
+
+    lua_pushinteger(L, 2*i + 2);
+    lua_gettable(L, bottom);
+    tex[i][1] = lua_tonumber(L, -1);
+
+    lua_pop(L, 2);
+  }
+  
+  lua_pop(L, 2);
+}
+
+void LuaInter::getGoalTex(int *texid, float tex[][2])
+{
+  lua_getglobal(L, "goalTexFunc");
   if (lua_pcall(L, 0, 2, 0))
     lua_error(L);
 

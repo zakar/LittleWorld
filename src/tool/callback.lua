@@ -30,6 +30,11 @@ function floorTexFunc()
    return Tex['map'].id, Tex['map'].texCoord
 end
 
+function goalTexFunc()
+   return Tex['goal'].id, Tex['goal'].texCoord
+end
+
 function backgroundTexFunc(state)
    return Tex['background'].id[1]
 end
+

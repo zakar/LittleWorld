@@ -14,6 +14,14 @@ Manager::Manager()
   memset( reach , 0 , sizeof(reach) );
 }
 
+void Manager::clear()
+{
+  memset(grid, 0, (sizeof grid));
+  update_tot = xlen = ylen = 0;
+  memset( circle_pos , 0 , sizeof(circle_pos) );
+  memset( reach , 0 , sizeof(reach) );
+}
+
 Manager* Manager::Instance()
 {
   static Manager* ins = new Manager;
@@ -204,7 +212,7 @@ void Manager::clearMatch()
 	Match::Instance(MAX_PT,MAX_EMY)->clear();
 }
 
-bool Manager::checkHit(const Vector3 &position, float s)
+int Manager::checkHit(const Vector3 &position, float s)
 {
   int x0, y0, x1, y1;
   calRange(x0, y0, x1, y1, position, s);
@@ -212,9 +220,7 @@ bool Manager::checkHit(const Vector3 &position, float s)
 
   for (int i = x0; i < x1; ++i)
     for (int j = y0; j < y1; ++j) 
-      if (grid[i][j]==1||grid[i][j]==2 ) {
-		return 1;
-	}
+      if (grid[i][j]) return grid[i][j];
 
   return 0;
 }

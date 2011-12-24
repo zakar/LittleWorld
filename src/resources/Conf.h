@@ -30,5 +30,12 @@ enum NOTIFICATION {
   ON_WINDOW_RESIZED
 };
 
+enum GAME_STATE {
+  OPENING,
+  WIN,
+  LOSE,
+  PLAYING
+};
+
 #endif
 

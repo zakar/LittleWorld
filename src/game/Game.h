@@ -32,7 +32,7 @@ class Game
   float windowPaddingLeft;
   float windowPaddingTop;
 
-  int gameState; //1 open menu,  2 playing game,  3 result
+  int gameState; //0 open menu,  1, 2 result,  3 playing
 };
 
 #endif

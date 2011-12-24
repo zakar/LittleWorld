@@ -4,13 +4,20 @@
 #include "../tool/LuaInter.h"
 #include "../resources/Conf.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
-static const char *backgroundTex[2] = { "./design/background1.jpg", "./design/background2.jpg" };
-static const char *buttonTex[2][2] = {
+static const char *backgroundTex[3] = { "./design/background1.jpg", 
+					"./design/background2.jpg",
+					"./design/background3.png" };
+static const char *buttonTex[3][2] = {
   { "./design/t_start.png", "./design/t_exit.png" },
-  { "./design/cfg_back.png", "./design/t_exit.png" },
+  { "./design/t_start.png", "./design/t_exit.png" },
+  { "./design/t_start.png", "./design/t_exit.png" },  
 };
 
+static const int rectCoord[2][4] = {
+  {0, 39, 160, 0}, {147, 39, 360, 0}
+};
 
 Menu::Menu()
 {
@@ -26,8 +33,12 @@ void Menu::setState(int state)
 {
   this->state = state;
   background.LoadFromFile(backgroundTex[state]);
-  button[0].LoadFromFile(buttonTex[state][0]);
-  button[1].LoadFromFile(buttonTex[state][1]);
+
+  for (int i = 0; i < 2; ++i) {
+    button[i].LoadFromFile(buttonTex[state][i]);
+    rect[i] = sf::IntRect(rectCoord[i][0], rectCoord[i][1],
+			  rectCoord[i][2], rectCoord[i][3]);
+  }  
   currentButton = 0;
 }
 
@@ -37,7 +48,7 @@ void Menu::dispatch(unsigned const int type)
   case ON_KEY_RETURN_DOWN: 
     if (state == 0) {
       if (currentButton == 0)
-	Game::Instance()->setGameState(2);
+	Game::Instance()->setGameState(3);
       else
 	Application::Instance()->Close();
     } else {
@@ -63,8 +74,11 @@ void Menu::draw()
   sf::Sprite buttonS0(button[0]);
   sf::Sprite buttonS1(button[1]);
 
-  buttonS0.SetPosition(100 + 100 * (currentButton == 0), 100);
-  buttonS1.SetPosition(100 + 100 * (currentButton == 1), 200);
+  buttonS0.SetSubRect(rect[(int)(currentButton == 0)]);
+  buttonS1.SetSubRect(rect[(int)(currentButton == 1)]);
+
+  buttonS0.SetPosition(100, 100);
+  buttonS1.SetPosition(100, 200);
 
   Application::Instance()->Draw(backgroundS);
   Application::Instance()->Draw(buttonS0);

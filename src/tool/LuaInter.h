@@ -22,7 +22,8 @@ class LuaInter
   void getPlayTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test);
   void getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test);
   void getFloorTex(int *texid, float tex[][2]);
-  void getBackGroundTex(int statue, int *backgroundTexId);
+  void getGoalTex(int *texid, float tex[][2]);
+  void getBackGroundTex(int state, int *backgroundTexId);
   
  private:
   LuaInter();
