@@ -191,12 +191,13 @@ void LuaInter::getPlayTex(const Vector3 &speed, int *texid, float tex[][2], bool
   lua_pop(L, 1);
 }
 
-void LuaInter::getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test)
+void LuaInter::getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test, int id)
 {
   lua_getglobal(L, "enemyTexFunc");
   lua_pushnumber(L, speed.x);
   lua_pushnumber(L, speed.z);
-  if (lua_pcall(L, 2, 3, 0))
+  lua_pushinteger(L, id);
+  if (lua_pcall(L, 3, 3, 0))
       lua_error(L);
 
   int bottom = lua_gettop(L);

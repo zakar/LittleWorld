@@ -18,6 +18,18 @@ end
 Tex['player'].texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 }
 Tex['player'].alpha_test = true
 
+
+Tex['enemy'] = { id = {} }
+for i = 1,4 do
+   for j = 1,4 do
+      Tex['enemy'].id[i..j] = World.addTexture('./design/ameng/' .. i .. j .. '.png', 128, 128)
+   end
+end
+Tex['enemy'].texCoord = { 0.0,1.0,  0.0,0.0,  1.0,0.0, 1.0,1.0 }
+Tex['enemy'].alpha_test = true
+
+
+
 Tex['background'] = { id = { World.addTexture('./design/background1.jpg', 1024, 512) } }
 
 
@@ -53,13 +65,18 @@ function initWorld()
 		    vertex = { 128,0,0,  128,256,0,  -128,256,0,  -128,0,0 },
 		    normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
 
-   for i = 1,5 do
+   for i = 1,2 do
       World.addEntity{ Entity = "Enemy", 
    		       x = math.random(10, 1000), z = math.random(10, 1000), s = 32,
+		       -- Object = "Sprite",
+		       -- RGBA = { 1.0, 1.0, 1.0, 1.0 },
+		       -- totalVertex = 4,
+		       -- vertex = { 128,0,0,  128,256,0,  -128,256,0,  -128,0,0 },
+		       -- normal = { 0,1,0, 0,1,0, 0,1,0, 0,1,0, } }
    		       Object = "Mesh",
    		       RGBA = { 1.0, 0.0, 0.0, 1.0 },
    		       size = 32,
-   		       height = 32 }
+   		       height = 32 } 
    end
 
    local WallPos = { { x = 1.0, z = 4.0 },

@@ -20,7 +20,7 @@ class LuaInter
   void addEntity(void);
 
   void getPlayTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test);
-  void getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test);
+  void getEnemyTex(const Vector3 &speed, int *texid, float tex[][2], bool *alpha_test, int id);
   void getFloorTex(int *texid, float tex[][2]);
   void getGoalTex(int *texid, float tex[][2]);
   void getBackGroundTex(int state, int *backgroundTexId);

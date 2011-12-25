@@ -85,5 +85,7 @@ void Enemy::update(float time)
   
   if ( position.x+speed.x*time >= 0 && position.x+speed.x*time <= WORLD_WIDTH && position.z+speed.z*time >= 0 && position.z+speed.z*time <= WORLD_HEIGHT && !Manager::Instance()->checkHit( position + speed*time , size ) ) position += speed * time;
   Manager::Instance()->updateGrid(position, size/2, 1);
+
+  LuaInter::Instance()->getEnemyTex(speed, &texid, tex, &alpha_test, id);
 }
 
