@@ -37,9 +37,9 @@ void Game::update(float time)
   if (gameState == PLAYING) {
     world.update(time);
     if (gameState != PLAYING) { //update完且发现切换到Menu，这时才清除掉world中的entity
-      world.clearAll();
       Manager::Instance()->clear();
       Enemy::clear();
+      world.clearAll();
     }
   }
 }

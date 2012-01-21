@@ -48,7 +48,7 @@ function enemyTexFunc(sx, sy, id)
  
    sDir[id] = cDir;
    sIdx[id] = cIdx;
-   return Tex['enemy'].id[cDir..cIdx], Tex['enemy'].texCoord, Tex['enemy'].alpha_test
+   return Tex['enemy'].id[cDir], Tex['enemy'].texCoord, Tex['enemy'].alpha_test
 end
 
 function floorTexFunc()

@@ -53,7 +53,7 @@ void Sprite::draw()
   }
     
   glEnable(GL_TEXTURE_2D);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); //GL_MODULATE);
   glBindTexture(GL_TEXTURE_2D, entity->texid);
 #endif
 

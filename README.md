@@ -1,36 +1,29 @@
 Little World
 ============
 
-![LittleWorld Preview](https://github.com/xpac27/LittleWorld/raw/master/design/littleWorld_preview.png)
-
-This program is supposed to be able to compile and run on MacOSX, Linux and PC (I only tested MacOSX for now).
-Project is under development so do not expect impressive features ;)
-
-Checkout the crazy dev [screenshots album](https://picasaweb.google.com/107724568994901745291/LittleWorld).
-
+This fork is about our team homework.
+We mainly changed the AI and add some new rendering scheme.
+We also use lua as the configure script
 
 REQUIRED:
 ---------
 * any c++ compiler (just install xcode if you are on mac)
 * GLUT and OpenGL c++ library (just install xcode if you are on mac)
 * SFML 1.6 c++ library (http://www.sfml-dev.org/tutorials/1.6/)
-
+* lua-5.1.4 (http://www.lua.org/download.html)
 
 INSTALLING:
 -----------
+* Download lua-5.1.4 and Compile it
+* Move the liblua.a to proper directory (May be you should edit FindLUA.cmake)
 * Clone the LittleWorld project
 * Type "make" to build the game
 * Type "./build/littleWorld" to start the game
 
-
-VERSION HISTORY:
-----------------
-* v0.3: real time lighting and shadows
-* v0.2: pathfinder
-* v0.1: basic rendering
-
-
-NOTES:
-------
-* If the game do not compile because of some errors in the code reset the history to a stable revision (git reset --hard v0.3) then try again.
+RUNNING:
+-----------
+We don't provide picture resource. 
+But you can use your own picture by changing the code here:
+src/tool/config.lua
+src/game/Menu.cpp
 
